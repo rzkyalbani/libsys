@@ -15,9 +15,20 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, $role): Response
     {
-        if ($request->user()->role !== $role) {
-            abort(403, 'Unauthorized');
+        $user = $request->user();
+
+        if (!$user) {
+            return redirect()->route('login');
         }
+
+        if ($user->role !== $role) {
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            } else {
+                return redirect()->route('member.dashboard');
+            }
+        }
+
         return $next($request);
     }
 }
