@@ -15,8 +15,24 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    $user = Auth::user();
+
+    if ($user->role === 'admin') {
+        return redirect()->route('admin.dashboard');
+    }
+
+    return redirect()->route('member.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/dashboard', fn() => Inertia::render('Admin/Dashboard'))
+        ->name('admin.dashboard');
+});
+
+Route::middleware(['auth', 'role:member'])->group(function () {
+    Route::get('/member/dashboard', fn() => Inertia::render('Member/Dashboard'))
+        ->name('member.dashboard');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
