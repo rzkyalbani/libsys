@@ -24,9 +24,13 @@ Route::get('/dashboard', function () {
     return redirect()->route('member.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', fn() => Inertia::render('Admin/Dashboard'))
-        ->name('admin.dashboard');
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', fn() => Inertia::render('Admin/Dashboard'))->name('dashboard');
+    Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
+});
+
+Route::middleware(['auth', 'role:member'])->prefix('member')->name('member.')->group(function () {
+    Route::get('/dashboard', fn() => Inertia::render('Member/Dashboard'))->name('dashboard');
 });
 
 Route::middleware(['auth', 'role:member'])->group(function () {
