@@ -40,7 +40,7 @@ export default function Dashboard({ auth }) {
                 </Link>
 
                 <Link
-                    href="#"
+                    href={route("member.books.index")}
                     className="block bg-white p-6 rounded-2xl shadow hover:shadow-lg transition-all border border-gray-100"
                 >
                     <h2 className="text-xl font-semibold mb-2">

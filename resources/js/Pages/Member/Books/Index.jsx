@@ -60,7 +60,11 @@ export default function Index({ books, categories, filters }) {
                                     : "Sedang tidak tersedia"}
                             </p>
                             <Link
-                                href="#"
+                                as="button"
+                                method="post"
+                                href={route("member.borrow.store")}
+                                data={{ book_id: book.id }}
+                                disabled={book.available_copies <= 0}
                                 className={`${
                                     book.available_copies > 0
                                         ? "bg-green-600 hover:bg-green-700"
