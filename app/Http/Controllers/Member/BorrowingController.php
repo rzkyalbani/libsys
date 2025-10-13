@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Member;
 use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\Borrowing;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class BorrowingController extends Controller
@@ -13,29 +14,43 @@ class BorrowingController extends Controller
     {
         $book = Book::findOrFail($request->book_id);
 
+        // Cek stok
         if ($book->available_copies <= 0) {
             return back()->withErrors(['error' => 'Buku tidak tersedia untuk dipinjam.']);
         }
 
-        // Cek apakah user sudah meminjam buku yang sama dan belum dikembalikan
-        $alreadyBorrowed = Borrowing::where('user_id', $request->user()->id)
+        $userId = $request->user()->id;
+
+        // Cek batas maksimum pinjaman aktif
+        $maxActive = (int) Setting::get('max_active_borrows_per_member', 3);
+
+        $activeCount = Borrowing::where('user_id', $userId)
+            ->whereIn('status', ['requested', 'borrowed'])
+            ->count();
+
+        if ($activeCount >= $maxActive) {
+            return back()->with('error', "Kamu sudah mencapai batas maksimum $maxActive pinjaman aktif.");
+        }
+
+        // Cek duplikasi peminjaman buku yang sama
+        $alreadyBorrowed = Borrowing::where('user_id', $userId)
             ->where('book_id', $book->id)
             ->whereIn('status', ['requested', 'borrowed'])
             ->exists();
 
         if ($alreadyBorrowed) {
-            return back()->withErrors(['error' => 'Kamu sudah meminjam atau sedang menunggu konfirmasi untuk buku ini.']);
+            return back()->with('error', 'Kamu sudah meminjam atau sedang menunggu konfirmasi untuk buku ini.');
         }
 
+        // Buat request baru
         Borrowing::create([
-            'user_id' => $request->user()->id,
+            'user_id' => $userId,
             'book_id' => $book->id,
             'status' => 'requested',
         ]);
 
-        // Kurangi stok tersedia
         $book->decrement('available_copies', 1);
 
-        return back()->with('success', 'Permintaan peminjaman telah dikirim. Tunggu konfirmasi dari admin.');
+        return back()->with('success', 'Permintaan peminjaman dikirim. Tunggu konfirmasi dari admin.');
     }
 }

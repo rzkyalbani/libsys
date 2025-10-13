@@ -8,6 +8,12 @@ export default function Index({ books, categories, filters }) {
         <div className="space-y-6">
             <h1 className="text-3xl font-bold">📚 Katalog Buku</h1>
 
+            {flash.error && (
+                <div className="bg-red-100 text-red-700 p-2 rounded">
+                    {flash.error}
+                </div>
+            )}
+
             {/* Search & Filter */}
             <form method="get" className="flex gap-4">
                 <input
