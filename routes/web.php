@@ -34,7 +34,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
 Route::middleware(['auth', 'role:member'])->prefix('member')->name('member.')->group(function () {
     Route::get('/dashboard', fn() => Inertia::render('Member/Dashboard'))->name('dashboard');
+    Route::get('/profile', [\App\Http\Controllers\Member\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile', [\App\Http\Controllers\Member\ProfileController::class, 'update'])->name('profile.update');
 });
+
 
 Route::middleware(['auth', 'role:member'])->group(function () {
     Route::get('/member/dashboard', fn() => Inertia::render('Member/Dashboard'))
