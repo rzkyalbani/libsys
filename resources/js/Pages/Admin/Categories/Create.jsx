@@ -1,4 +1,5 @@
 import { useForm } from "@inertiajs/react";
+import AdminLayout from "../AdminLayout";
 
 export default function Create() {
     const { data, setData, post, processing, errors } = useForm({
@@ -48,3 +49,5 @@ export default function Create() {
         </div>
     );
 }
+
+Create.layout = (page) => <AdminLayout>{page}</AdminLayout>;

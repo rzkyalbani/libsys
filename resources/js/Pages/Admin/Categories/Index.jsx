@@ -1,4 +1,5 @@
 import { Link, usePage } from "@inertiajs/react";
+import AdminLayout from "../AdminLayout";
 
 export default function Index({ categories }) {
     const { flash } = usePage().props;
@@ -58,3 +59,5 @@ export default function Index({ categories }) {
         </div>
     );
 }
+
+Index.layout = (page) => <AdminLayout>{page}</AdminLayout>;

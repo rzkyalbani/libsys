@@ -1,4 +1,5 @@
 import { useForm, usePage } from "@inertiajs/react";
+import MemberLayout from "../MemberLayout";
 
 export default function Edit({ user }) {
     const { flash } = usePage().props;
@@ -88,3 +89,5 @@ export default function Edit({ user }) {
         </div>
     );
 }
+
+Edit.layout = (page) => <MemberLayout>{page}</MemberLayout>;

@@ -1,4 +1,5 @@
 import { Link } from "@inertiajs/react";
+import MemberLayout from "./MemberLayout";
 
 export default function Dashboard({ auth }) {
     return (
@@ -57,7 +58,7 @@ export default function Dashboard({ auth }) {
                     <h2 className="text-xl font-semibold mb-2">
                         🕓 Riwayat Peminjaman
                     </h2>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-gray -600 text-sm">
                         Lihat daftar buku yang sudah dan sedang kamu pinjam.
                     </p>
                 </Link>
@@ -65,3 +66,5 @@ export default function Dashboard({ auth }) {
         </div>
     );
 }
+
+Dashboard.layout = (page) => <MemberLayout>{page}</MemberLayout>;

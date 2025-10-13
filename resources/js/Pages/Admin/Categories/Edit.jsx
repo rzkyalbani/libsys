@@ -1,4 +1,5 @@
 import { useForm } from "@inertiajs/react";
+import AdminLayout from "../AdminLayout";
 
 export default function Edit({ category }) {
     const { data, setData, put, processing, errors } = useForm({
@@ -48,3 +49,5 @@ export default function Edit({ category }) {
         </div>
     );
 }
+
+Edit.layout = (page) => <AdminLayout>{page}</AdminLayout>;

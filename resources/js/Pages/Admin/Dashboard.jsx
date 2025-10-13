@@ -1,4 +1,5 @@
 import { Link } from "@inertiajs/react";
+import AdminLayout from "./AdminLayout";
 
 export default function Dashboard({ auth }) {
     return (
@@ -80,3 +81,5 @@ export default function Dashboard({ auth }) {
         </div>
     );
 }
+
+Dashboard.layout = (page) => <AdminLayout>{page}</AdminLayout>;
