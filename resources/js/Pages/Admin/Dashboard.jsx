@@ -29,7 +29,7 @@ export default function Dashboard({ auth }) {
 
             {/* Navigation Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-6">
-                {/* <Link
+                <Link
                     href={route("admin.books.index")}
                     className="block bg-white p-6 rounded-2xl shadow hover:shadow-lg transition-all border border-gray-100"
                 >
@@ -39,7 +39,7 @@ export default function Dashboard({ auth }) {
                     <p className="text-gray-600 text-sm">
                         Tambah, ubah, dan hapus data buku di perpustakaan.
                     </p>
-                </Link> */}
+                </Link>
 
                 <Link
                     href={route("admin.categories.index")}
