@@ -13,12 +13,20 @@ export default function Edit({ categories, book }) {
 
     const submit = (e) => {
         e.preventDefault();
+
+        if (parseInt(data.available_copies) > parseInt(data.total_copies)) {
+            alert(
+                "Jumlah tersedia tidak boleh lebih besar dari total eksemplar!"
+            );
+            return;
+        }
+
         put(route("admin.books.update", book));
     };
 
     return (
         <div className="p-6">
-            <h1 className="text-2xl mb-4 font-bold">Tambah Buku</h1>
+            <h1 className="text-2xl mb-4 font-bold">Edit Buku</h1>
             <form onSubmit={submit} className="space-y-4">
                 <div>
                     <label>Judul</label>
@@ -73,7 +81,13 @@ export default function Edit({ categories, book }) {
                             }
                             className="border rounded w-full p-2"
                         />
+                        {errors.total_copies && (
+                            <p className="text-red-500 text-sm mt-1">
+                                {errors.total_copies}
+                            </p>
+                        )}
                     </div>
+
                     <div>
                         <label>Tersedia</label>
                         <input
@@ -84,6 +98,11 @@ export default function Edit({ categories, book }) {
                             }
                             className="border rounded w-full p-2"
                         />
+                        {errors.available_copies && (
+                            <p className="text-red-500 text-sm mt-1">
+                                {errors.available_copies}
+                            </p>
+                        )}
                     </div>
                 </div>
 

@@ -38,9 +38,14 @@ class BookController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        // otomatis isi available_copies jika kosong
         if (!isset($validated['available_copies'])) {
             $validated['available_copies'] = $validated['total_copies'];
+        }
+
+        if ($validated['available_copies'] > $validated['total_copies']) {
+            return back()->withErrors([
+                'available_copies' => 'Jumlah buku tersedia tidak boleh melebihi total eksemplar.',
+            ])->withInput();
         }
 
         Book::create($validated);
@@ -67,6 +72,16 @@ class BookController extends Controller
             'available_copies' => 'nullable|integer|min:0',
             'description' => 'nullable|string',
         ]);
+
+        if (!isset($validated['available_copies'])) {
+            $validated['available_copies'] = $validated['total_copies'];
+        }   
+
+        if ($validated['available_copies'] > $validated['total_copies']) {
+            return back()->withErrors([
+                'available_copies' => 'Jumlah buku tersedia tidak boleh melebihi total eksemplar.',
+            ])->withInput();
+        }
 
         $book->update($validated);
 

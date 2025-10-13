@@ -13,6 +13,14 @@ export default function Create({ categories }) {
 
     const submit = (e) => {
         e.preventDefault();
+
+        if (parseInt(data.available_copies) > parseInt(data.total_copies)) {
+            alert(
+                "Jumlah tersedia tidak boleh lebih besar dari total eksemplar!"
+            );
+            return;
+        }
+
         post(route("admin.books.store"));
     };
 
@@ -73,7 +81,13 @@ export default function Create({ categories }) {
                             }
                             className="border rounded w-full p-2"
                         />
+                        {errors.total_copies && (
+                            <p className="text-red-500 text-sm mt-1">
+                                {errors.total_copies}
+                            </p>
+                        )}
                     </div>
+
                     <div>
                         <label>Tersedia</label>
                         <input
@@ -84,6 +98,11 @@ export default function Create({ categories }) {
                             }
                             className="border rounded w-full p-2"
                         />
+                        {errors.available_copies && (
+                            <p className="text-red-500 text-sm mt-1">
+                                {errors.available_copies}
+                            </p>
+                        )}
                     </div>
                 </div>
 
