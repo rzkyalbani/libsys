@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Borrowing;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Setting;
 
 class BorrowingController extends Controller
 {
@@ -25,10 +26,12 @@ class BorrowingController extends Controller
         $action = $request->action;
 
         if ($action === 'approve' && $borrowing->status === 'requested') {
+            $borrowDays = (int) Setting::get('max_borrow_days', 7);
+
             $borrowing->update([
                 'status' => 'borrowed',
                 'borrow_date' => now(),
-                'due_date' => now()->addDays(7), // misal 7 hari
+                'due_date' => now()->addDays($borrowDays),
             ]);
 
             return back()->with('success', 'Peminjaman disetujui.');
@@ -40,7 +43,7 @@ class BorrowingController extends Controller
 
             if ($now->gt($borrowing->due_date)) {
                 $daysLate = $now->diffInDays($borrowing->due_date);
-                $fineRate = 1000; // Rp 1000 per hari
+                $fineRate = (int) Setting::get('fine_rate_per_day', 1000);
                 $fine = $daysLate * $fineRate;
             }
 
