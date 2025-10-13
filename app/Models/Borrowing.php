@@ -14,8 +14,15 @@ class Borrowing extends Model
         'book_id',
         'status',
         'borrow_date',
+        'due_date',
         'return_date',
         'fine_amount',
+    ];
+
+    protected $casts = [
+        'borrow_date' => 'date',
+        'due_date'    => 'date', 
+        'return_date' => 'date',
     ];
 
     public function user()
