@@ -25,6 +25,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('books', \App\Http\Controllers\Admin\BookController::class);
     Route::resource('members', \App\Http\Controllers\Admin\MemberController::class)
     ->only(['index', 'destroy']);
+    Route::get('/borrowings', [\App\Http\Controllers\Admin\BorrowingController::class, 'index'])->name('borrowings.index');
+    Route::patch('/borrowings/{borrowing}', [\App\Http\Controllers\Admin\BorrowingController::class, 'update'])->name('borrowings.update');
 }); 
 
 Route::middleware(['auth', 'role:member'])->prefix('member')->name('member.')->group(function () {
