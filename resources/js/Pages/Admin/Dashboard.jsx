@@ -66,7 +66,7 @@ export default function Dashboard({ auth }) {
                     </p>
                 </Link>
 
-                {/* <Link
+                <Link
                     href={route("admin.settings.index")}
                     className="block bg-white p-6 rounded-2xl shadow hover:shadow-lg transition-all border border-gray-100"
                 >
@@ -76,7 +76,7 @@ export default function Dashboard({ auth }) {
                     <p className="text-gray-600 text-sm">
                         Ubah konfigurasi seperti tarif denda dan batas pinjam.
                     </p>
-                </Link> */}
+                </Link>
             </div>
         </div>
     );

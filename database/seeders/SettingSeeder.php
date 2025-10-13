@@ -15,8 +15,9 @@ class SettingSeeder extends Seeder
     {
         $settings = [
             ['key' => 'fine_rate_per_day', 'value' => '1000'],
-            ['key' => 'borrow_expire_hours', 'value' => '24'],
-            ['key' => 'max_borrow_per_member', 'value' => '5'],
+            ['key' => 'auto_cancel_hours', 'value' => '24'],
+            ['key' => 'max_borrow_days', 'value' => '7'],
+            ['key' => 'max_active_borrows_per_member', 'value' => '5'],
         ];
 
         foreach ($settings as $setting) {
