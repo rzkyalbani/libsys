@@ -28,7 +28,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/dashboard', fn() => Inertia::render('Admin/Dashboard'))->name('dashboard');
     Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
     Route::resource('books', \App\Http\Controllers\Admin\BookController::class);
-});
+    Route::resource('members', \App\Http\Controllers\Admin\MemberController::class)
+    ->only(['index', 'destroy']);
+}); 
 
 Route::middleware(['auth', 'role:member'])->prefix('member')->name('member.')->group(function () {
     Route::get('/dashboard', fn() => Inertia::render('Member/Dashboard'))->name('dashboard');
