@@ -17,19 +17,26 @@ export default function MemberLayout({ children }) {
                                 href={route("member.dashboard")}
                                 active={current("member.dashboard")}
                             >
-                                🏠 Dashboard
+                                Dashboard
                             </NavLink>
                             <NavLink
                                 href={route("member.books.index")}
                                 active={current("member.books.index")}
                             >
-                                📚 Katalog
+                                Katalog
                             </NavLink>
+                            <NavLink
+                                href={route("member.reservations.index")}
+                                active={current("member.reservations.index")}
+                            >
+                                Reservasi Saya
+                            </NavLink>
+
                             <NavLink
                                 href={route("member.profile.edit")}
                                 active={current("member.profile.edit")}
                             >
-                                👤 Profil
+                                Profil
                             </NavLink>
                         </nav>
                     </div>
