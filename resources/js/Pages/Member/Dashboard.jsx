@@ -43,14 +43,27 @@ export default function Dashboard({ auth }) {
                 </Link>
 
                 <Link
-                    href="#"
+                    href={route("member.borrowings.index")}
                     className="block bg-white p-6 rounded-2xl shadow hover:shadow-lg transition-all border border-gray-100"
                 >
                     <h2 className="text-xl font-semibold mb-2">
                         🕓 Riwayat Peminjaman
                     </h2>
-                    <p className="text-gray -600 text-sm">
+                    <p className="text-gray-600 text-sm">
                         Lihat daftar buku yang sudah dan sedang kamu pinjam.
+                    </p>
+                </Link>
+
+                <Link
+                    href={route("member.reservations.index")}
+                    className="block bg-white p-6 rounded-2xl shadow hover:shadow-lg transition-all border border-gray-100"
+                >
+                    <h2 className="text-xl font-semibold mb-2">
+                        📅 Reservasi Saya
+                    </h2>
+                    <p className="text-gray-600 text-sm">
+                        Cek daftar buku yang kamu pesan dan tunggu
+                        ketersediaannya.
                     </p>
                 </Link>
             </div>

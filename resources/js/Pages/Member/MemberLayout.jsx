@@ -26,12 +26,17 @@ export default function MemberLayout({ children }) {
                                 Katalog
                             </NavLink>
                             <NavLink
+                                href={route("member.borrowings.index")}
+                                active={current("member.borrowings.index")}
+                            >
+                                Riwayat
+                            </NavLink>
+                            <NavLink
                                 href={route("member.reservations.index")}
                                 active={current("member.reservations.index")}
                             >
                                 Reservasi Saya
                             </NavLink>
-
                             <NavLink
                                 href={route("member.profile.edit")}
                                 active={current("member.profile.edit")}

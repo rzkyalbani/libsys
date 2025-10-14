@@ -6,10 +6,24 @@ use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\Borrowing;
 use App\Models\Setting;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 
 class BorrowingController extends Controller
 {
+    public function index()
+    {
+        $borrowings = Borrowing::with(['book', 'book.category'])
+            ->where('user_id', Auth::id())
+            ->orderByDesc('created_at')
+            ->paginate(10);
+
+        return Inertia::render('Member/Borrowings/Index', [
+            'borrowings' => $borrowings,
+        ]);
+    }
+
     public function store(Request $request)
     {
         $book = Book::findOrFail($request->book_id);
