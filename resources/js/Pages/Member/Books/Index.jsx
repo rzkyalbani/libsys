@@ -5,43 +5,49 @@ export default function Index({ books, categories, filters }) {
     const { flash } = usePage().props;
 
     return (
-        <div className="space-y-6">
-            <h1 className="text-3xl font-bold">📚 Katalog Buku</h1>
+        <div className="p-6 space-y-6">
+            <div className="flex items-center justify-between">
+                <h1 className="text-3xl font-bold text-gray-800">
+                    📚 Katalog Buku
+                </h1>
+            </div>
 
             {flash.error && (
-                <div className="bg-red-100 text-red-700 p-2 rounded">
+                <div className="bg-red-100 text-red-700 p-3 rounded-md shadow-sm">
                     {flash.error}
                 </div>
             )}
 
             {/* Search & Filter */}
-            <form method="get" className="flex gap-4">
-                <input
-                    type="text"
-                    name="search"
-                    defaultValue={filters.search}
-                    placeholder="Cari judul buku..."
-                    className="border p-2 rounded w-full"
-                />
-                <select
-                    name="category"
-                    defaultValue={filters.category || ""}
-                    className="border p-2 rounded"
-                >
-                    <option value="">Semua Kategori</option>
-                    {categories.map((cat) => (
-                        <option key={cat.id} value={cat.id}>
-                            {cat.name}
-                        </option>
-                    ))}
-                </select>
-                <button
-                    type="submit"
-                    className="bg-blue-600 text-white px-4 py-2 rounded"
-                >
-                    Cari
-                </button>
-            </form>
+            <div className="bg-white rounded-xl shadow border border-gray-100 p-6">
+                <form method="get" className="flex gap-4 items-center">
+                    <input
+                        type="text"
+                        name="search"
+                        defaultValue={filters.search}
+                        placeholder="Cari judul buku..."
+                        className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+                    />
+                    <select
+                        name="category"
+                        defaultValue={filters.category || ""}
+                        className="mt-1 block rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+                    >
+                        <option value="">Semua Kategori</option>
+                        {categories.map((cat) => (
+                            <option key={cat.id} value={cat.id}>
+                                {cat.name}
+                            </option>
+                        ))}
+                    </select>
+                    <button
+                        type="submit"
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition"
+                    >
+                        Cari
+                    </button>
+                </form>
+            </div>
 
             {/* Book List */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
@@ -75,7 +81,7 @@ export default function Index({ books, categories, filters }) {
                                     book.available_copies > 0
                                         ? "bg-green-600 hover:bg-green-700"
                                         : "bg-gray-400 cursor-not-allowed"
-                                } text-white px-4 py-2 rounded transition-all`}
+                                } text-white px-4 py-2 rounded-md transition-all`}
                             >
                                 Pinjam
                             </Link>
