@@ -1,17 +1,44 @@
 import { Link } from "@inertiajs/react";
 import AdminLayout from "./AdminLayout";
 
-export default function Dashboard({ auth }) {
+export default function Dashboard({ auth, stats }) {
+    const summary = [
+        {
+            title: "Total Buku",
+            value: stats.books,
+            color: "bg-blue-100 text-blue-700",
+            icon: "📚",
+        },
+        {
+            title: "Total Member",
+            value: stats.members,
+            color: "bg-green-100 text-green-700",
+            icon: "👥",
+        },
+        {
+            title: "Peminjaman Aktif",
+            value: stats.borrowings,
+            color: "bg-amber-100 text-amber-700",
+            icon: "📦",
+        },
+        {
+            title: "Total Denda",
+            value: `Rp ${Number(stats.fines).toLocaleString("id-ID")}`,
+            color: "bg-rose-100 text-rose-700",
+            icon: "💰",
+        },
+    ];
+
     const menus = [
         {
             title: "📚 Kelola Buku",
-            desc: "Tambah, ubah, dan hapus data buku di perpustakaan.",
+            desc: "Tambah, ubah, dan hapus data buku.",
             href: route("admin.books.index"),
             color: "from-blue-500 to-indigo-500",
         },
         {
             title: "🏷️ Kelola Kategori",
-            desc: "Atur kategori buku agar lebih mudah dikelompokkan.",
+            desc: "Atur kategori buku agar rapi.",
             href: route("admin.categories.index"),
             color: "from-emerald-500 to-green-500",
         },
@@ -23,7 +50,7 @@ export default function Dashboard({ auth }) {
         },
         {
             title: "⚙️ Pengaturan Sistem",
-            desc: "Ubah konfigurasi seperti tarif denda dan batas pinjam.",
+            desc: "Ubah konfigurasi sistem & limit.",
             href: route("admin.settings.index"),
             color: "from-amber-500 to-orange-500",
         },
@@ -44,7 +71,21 @@ export default function Dashboard({ auth }) {
                 </p>
             </header>
 
-            {/* Cards */}
+            {/* Statistik Cards */}
+            <section className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {summary.map((item, i) => (
+                    <div
+                        key={i}
+                        className={`p-6 rounded-2xl shadow-sm ${item.color} border border-white/40`}
+                    >
+                        <div className="text-3xl mb-2">{item.icon}</div>
+                        <h3 className="text-lg font-semibold">{item.title}</h3>
+                        <p className="text-2xl font-bold">{item.value}</p>
+                    </div>
+                ))}
+            </section>
+
+            {/* Navigation Cards */}
             <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {menus.map((item, i) => (
                     <Link
