@@ -105,6 +105,26 @@ export default function Index({ books, categories, filters }) {
                                     ? "Pinjam"
                                     : "Reservasi"}
                             </Link>
+
+                            {book.file_path && (
+                                <div className="mt-3 flex gap-2">
+                                    <a
+                                        href={`/storage/${book.file_path}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition"
+                                    >
+                                        📖 Baca E-book
+                                    </a>
+                                    <a
+                                        href={`/storage/${book.file_path}`}
+                                        download
+                                        className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded transition"
+                                    >
+                                        ⬇️ Unduh
+                                    </a>
+                                </div>
+                            )}
                         </div>
                     ))
                 ) : (

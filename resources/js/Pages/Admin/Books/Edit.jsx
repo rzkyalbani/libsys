@@ -142,6 +142,19 @@ export default function Edit({ categories, book }) {
                         />
                     </div>
 
+                    <div>
+                        <label>File E-book (PDF)</label>
+                        <input
+                            type="file"
+                            accept="application/pdf"
+                            onChange={(e) => setData("file", e.target.files[0])}
+                            className="border rounded w-full p-2"
+                        />
+                        {errors.file && (
+                            <p className="text-red-500">{errors.file}</p>
+                        )}
+                    </div>
+
                     <div className="flex items-center space-x-2">
                         <button
                             type="submit"
