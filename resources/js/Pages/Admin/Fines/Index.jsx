@@ -5,68 +5,88 @@ export default function Index({ borrowings }) {
     const { flash } = usePage().props;
 
     return (
-        <div className="p-6 space-y-6">
-            <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold text-gray-800">
-                    Manajemen Denda
-                </h1>
+        <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+            {/* Header */}
+            <div className="flex justify-between items-center">
+                <div>
+                    <h1 className="text-2xl font-semibold text-gray-900 tracking-tight">
+                        Manajemen Denda
+                    </h1>
+                    <p className="text-sm text-gray-500">
+                        Lihat dan kelola pembayaran denda keterlambatan
+                    </p>
+                </div>
             </div>
 
-            {/* Flash messages */}
+            {/* Flash Messages */}
             {flash.success && (
-                <div className="bg-green-100 text-green-700 p-3 rounded-md shadow-sm">
+                <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-lg shadow-sm text-sm">
                     {flash.success}
                 </div>
             )}
             {flash.error && (
-                <div className="bg-red-100 text-red-700 p-3 rounded-md shadow-sm">
+                <div className="bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-lg shadow-sm text-sm">
                     {flash.error}
                 </div>
             )}
 
-            <div className="bg-white rounded-xl shadow border border-gray-100 overflow-hidden">
-                <table className="min-w-full text-sm">
+            {/* Table */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <table className="min-w-full text-sm text-gray-700">
                     <thead className="bg-gray-50 border-b">
                         <tr>
-                            <th className="px-4 py-3">Member</th>
-                            <th className="px-4 py-3">Judul Buku</th>
-                            <th className="px-4 py-3">Denda</th>
-                            <th className="px-4 py-3">Status</th>
-                            <th className="px-4 py-3">Tanggal Pembayaran</th>
-                            <th className="px-4 py-3 text-center">Aksi</th>
+                            <th className="px-5 py-3 text-left font-semibold text-gray-600">
+                                Member
+                            </th>
+                            <th className="px-5 py-3 text-left font-semibold text-gray-600">
+                                Judul Buku
+                            </th>
+                            <th className="px-5 py-3 text-left font-semibold text-gray-600">
+                                Denda
+                            </th>
+                            <th className="px-5 py-3 text-left font-semibold text-gray-600">
+                                Status
+                            </th>
+                            <th className="px-5 py-3 text-left font-semibold text-gray-600">
+                                Tanggal Pembayaran
+                            </th>
+                            <th className="px-5 py-3 text-center font-semibold text-gray-600">
+                                Aksi
+                            </th>
                         </tr>
                     </thead>
-                    <tbody className="text-gray-700">
+
+                    <tbody>
                         {borrowings.data.length > 0 ? (
                             borrowings.data.map((item) => (
                                 <tr
                                     key={item.id}
-                                    className="border-t hover:bg-gray-50 transition"
+                                    className="border-b last:border-none hover:bg-gray-50 transition-all"
                                 >
-                                    <td className="px-4 py-3">
+                                    <td className="px-5 py-3 font-medium text-gray-900">
                                         {item.user?.name || "—"}
                                     </td>
-                                    <td className="px-4 py-3">
+                                    <td className="px-5 py-3">
                                         {item.book?.title || "—"}
                                     </td>
-                                    <td className="px-4 py-3 font-semibold text-red-600">
+                                    <td className="px-5 py-3 font-semibold text-rose-600">
                                         Rp{" "}
                                         {item.fine_amount.toLocaleString(
                                             "id-ID"
                                         )}
                                     </td>
-                                    <td className="px-4 py-3">
+                                    <td className="px-5 py-3">
                                         {item.is_fine_paid ? (
-                                            <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-medium">
+                                            <span className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-2.5 py-1 rounded-full text-xs font-medium">
                                                 Sudah Dibayar
                                             </span>
                                         ) : (
-                                            <span className="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-medium">
+                                            <span className="bg-rose-50 border border-rose-200 text-rose-700 px-2.5 py-1 rounded-full text-xs font-medium">
                                                 Belum Dibayar
                                             </span>
                                         )}
                                     </td>
-                                    <td className="px-4 py-3 text-sm text-gray-500">
+                                    <td className="px-5 py-3 text-gray-500 text-sm">
                                         {item.fine_paid_at
                                             ? new Date(
                                                   item.fine_paid_at
@@ -77,7 +97,7 @@ export default function Index({ borrowings }) {
                                               })
                                             : "—"}
                                     </td>
-                                    <td className="px-4 py-3 text-center">
+                                    <td className="px-5 py-3 text-center">
                                         {!item.is_fine_paid && (
                                             <Link
                                                 href={route(
@@ -86,7 +106,7 @@ export default function Index({ borrowings }) {
                                                 )}
                                                 method="post"
                                                 as="button"
-                                                className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-md text-sm transition"
+                                                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg shadow-sm hover:shadow-md active:scale-[0.98] transition-all"
                                             >
                                                 Tandai Sudah Dibayar
                                             </Link>
@@ -98,7 +118,7 @@ export default function Index({ borrowings }) {
                             <tr>
                                 <td
                                     colSpan="6"
-                                    className="text-center py-6 text-gray-500"
+                                    className="text-center text-gray-500 py-10 italic"
                                 >
                                     Tidak ada denda ditemukan.
                                 </td>
@@ -108,16 +128,19 @@ export default function Index({ borrowings }) {
                 </table>
             </div>
 
+            {/* Pagination */}
             {borrowings.links && borrowings.links.length > 1 && (
-                <div className="flex justify-center mt-6 gap-2">
+                <div className="flex justify-center items-center gap-2 pt-4">
                     {borrowings.links.map((link, i) => (
                         <Link
                             key={i}
                             href={link.url || "#"}
-                            className={`px-3 py-1 rounded text-sm ${
+                            className={`min-w-[2.5rem] px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                                 link.active
-                                    ? "bg-blue-600 text-white"
-                                    : "bg-gray-200 hover:bg-gray-300"
+                                    ? "bg-blue-600 text-white shadow-sm"
+                                    : link.url
+                                    ? "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400"
+                                    : "bg-gray-100 text-gray-400 cursor-not-allowed"
                             }`}
                             dangerouslySetInnerHTML={{ __html: link.label }}
                         />

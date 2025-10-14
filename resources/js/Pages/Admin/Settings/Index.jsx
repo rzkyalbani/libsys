@@ -4,7 +4,7 @@ import AdminLayout from "../AdminLayout";
 export default function Index({ settings }) {
     const { flash } = usePage().props;
 
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing } = useForm({
         fine_rate_per_day: settings.fine_rate_per_day || 1000,
         max_borrow_days: settings.max_borrow_days || 7,
         auto_cancel_hours: settings.auto_cancel_hours || 24,
@@ -18,23 +18,31 @@ export default function Index({ settings }) {
     };
 
     return (
-        <div className="p-6 space-y-6">
-            <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold text-gray-800">
-                    ⚙️ Pengaturan Sistem
-                </h1>
+        <div className="max-w-3xl mx-auto px-6 py-8 space-y-8">
+            {/* Header */}
+            <div className="flex justify-between items-center">
+                <div>
+                    <h1 className="text-2xl font-semibold text-gray-900 tracking-tight">
+                        Pengaturan Sistem
+                    </h1>
+                    <p className="text-sm text-gray-500">
+                        Atur batas waktu peminjaman dan tarif denda harian
+                    </p>
+                </div>
             </div>
 
+            {/* Flash Message */}
             {flash.success && (
-                <div className="bg-green-100 text-green-700 p-3 rounded-md shadow-sm">
+                <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-lg shadow-sm text-sm">
                     {flash.success}
                 </div>
             )}
 
-            <div className="bg-white rounded-xl shadow border border-gray-100 p-6 max-w-lg">
-                <form onSubmit={submit} className="space-y-4">
+            {/* Form */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <form onSubmit={submit} className="space-y-6">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
                             Denda per Hari (Rp)
                         </label>
                         <input
@@ -43,12 +51,12 @@ export default function Index({ settings }) {
                             onChange={(e) =>
                                 setData("fine_rate_per_day", e.target.value)
                             }
-                            className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
                             Lama Peminjaman Maksimal (hari)
                         </label>
                         <input
@@ -57,12 +65,12 @@ export default function Index({ settings }) {
                             onChange={(e) =>
                                 setData("max_borrow_days", e.target.value)
                             }
-                            className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
                             Auto Cancel (jam)
                         </label>
                         <input
@@ -71,12 +79,12 @@ export default function Index({ settings }) {
                             onChange={(e) =>
                                 setData("auto_cancel_hours", e.target.value)
                             }
-                            className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
                             Batas Pinjaman Aktif per Member
                         </label>
                         <input
@@ -88,15 +96,15 @@ export default function Index({ settings }) {
                                     e.target.value
                                 )
                             }
-                            className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
                         />
                     </div>
 
-                    <div className="flex items-center space-x-2">
+                    <div className="flex justify-end pt-2">
                         <button
                             type="submit"
                             disabled={processing}
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition"
+                            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-sm hover:shadow-md active:scale-[0.98] transition-all"
                         >
                             Simpan Perubahan
                         </button>
