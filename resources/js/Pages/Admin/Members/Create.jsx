@@ -1,129 +1,98 @@
 import { useForm } from "@inertiajs/react";
 import AdminLayout from "../AdminLayout";
 
-export default function Create({ categories }) {
+export default function Create() {
     const { data, setData, post, processing, errors } = useForm({
-        title: "",
-        author: "",
-        isbn: "",
-        category_id: "",
-        total_copies: 1,
-        available_copies: "",
-        description: "",
+        name: "",
+        email: "",
+        password: "",
     });
 
     const submit = (e) => {
         e.preventDefault();
-
-        if (parseInt(data.available_copies) > parseInt(data.total_copies)) {
-            alert(
-                "Jumlah tersedia tidak boleh lebih besar dari total eksemplar!"
-            );
-            return;
-        }
-
-        post(route("admin.books.store"));
+        post(route("admin.members.store"));
     };
 
     return (
-        <div className="p-6">
-            <h1 className="text-2xl mb-4 font-bold">Tambah Buku</h1>
-            <form onSubmit={submit} className="space-y-4">
-                <div>
-                    <label>Judul</label>
-                    <input
-                        type="text"
-                        value={data.title}
-                        onChange={(e) => setData("title", e.target.value)}
-                        className="border rounded w-full p-2"
-                    />
-                    {errors.title && (
-                        <p className="text-red-500">{errors.title}</p>
-                    )}
-                </div>
+        <div className="p-6 space-y-6">
+            <div className="flex items-center justify-between">
+                <h1 className="text-3xl font-bold text-gray-800">
+                    🧑 Tambah Member
+                </h1>
+            </div>
 
-                <div>
-                    <label>Penulis</label>
-                    <input
-                        type="text"
-                        value={data.author}
-                        onChange={(e) => setData("author", e.target.value)}
-                        className="border rounded w-full p-2"
-                    />
-                </div>
-
-                <div>
-                    <label>Kategori</label>
-                    <select
-                        value={data.category_id}
-                        onChange={(e) => setData("category_id", e.target.value)}
-                        className="border rounded w-full p-2"
-                    >
-                        <option value="">-- Pilih Kategori --</option>
-                        {categories.map((cat) => (
-                            <option key={cat.id} value={cat.id}>
-                                {cat.name}
-                            </option>
-                        ))}
-                    </select>
-                    {errors.category_id && (
-                        <p className="text-red-500">{errors.category_id}</p>
-                    )}
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
+            <div className="bg-white rounded-xl shadow border border-gray-100 p-6 max-w-lg">
+                <form onSubmit={submit} className="space-y-4">
                     <div>
-                        <label>Total Eksemplar</label>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Nama
+                        </label>
                         <input
-                            type="number"
-                            value={data.total_copies}
-                            onChange={(e) =>
-                                setData("total_copies", e.target.value)
-                            }
-                            className="border rounded w-full p-2"
+                            type="text"
+                            value={data.name}
+                            onChange={(e) => setData("name", e.target.value)}
+                            className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
                         />
-                        {errors.total_copies && (
+                        {errors.name && (
                             <p className="text-red-500 text-sm mt-1">
-                                {errors.total_copies}
+                                {errors.name}
                             </p>
                         )}
                     </div>
 
                     <div>
-                        <label>Tersedia</label>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Email
+                        </label>
                         <input
-                            type="number"
-                            value={data.available_copies}
-                            onChange={(e) =>
-                                setData("available_copies", e.target.value)
-                            }
-                            className="border rounded w-full p-2"
+                            type="email"
+                            value={data.email}
+                            onChange={(e) => setData("email", e.target.value)}
+                            className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
                         />
-                        {errors.available_copies && (
+                        {errors.email && (
                             <p className="text-red-500 text-sm mt-1">
-                                {errors.available_copies}
+                                {errors.email}
                             </p>
                         )}
                     </div>
-                </div>
 
-                <div>
-                    <label>Deskripsi</label>
-                    <textarea
-                        value={data.description}
-                        onChange={(e) => setData("description", e.target.value)}
-                        className="border rounded w-full p-2"
-                    />
-                </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Password
+                        </label>
+                        <input
+                            type="password"
+                            value={data.password}
+                            onChange={(e) =>
+                                setData("password", e.target.value)
+                            }
+                            className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+                        />
+                        {errors.password && (
+                            <p className="text-red-500 text-sm mt-1">
+                                {errors.password}
+                            </p>
+                        )}
+                    </div>
 
-                <button
-                    type="submit"
-                    disabled={processing}
-                    className="bg-blue-600 text-white px-4 py-2 rounded"
-                >
-                    Simpan
-                </button>
-            </form>
+                    <div className="flex items-center space-x-2">
+                        <button
+                            type="submit"
+                            disabled={processing}
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition"
+                        >
+                            Simpan
+                        </button>
+                        <a
+                            href={route("admin.members.index")}
+                            className="text-sm text-gray-500 hover:underline"
+                        >
+                            Batal
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }
