@@ -17,93 +17,106 @@ export default function Edit({ user }) {
     };
 
     return (
-        <div className="p-6 space-y-6">
-            <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold text-gray-800">
-                    ✏️ Edit Profil
+        <div className="max-w-2xl mx-auto space-y-8">
+            {/* Header */}
+            <div className="flex flex-col space-y-1">
+                <h1 className="text-2xl font-semibold text-neutral-900 tracking-tight">
+                    Edit Profil
                 </h1>
+                <p className="text-neutral-500 text-sm">
+                    Perbarui informasi akun kamu.
+                </p>
             </div>
 
+            {/* Flash Message */}
             {flash.success && (
-                <div className="bg-green-100 text-green-700 p-3 rounded-md shadow-sm">
+                <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-lg shadow-sm text-sm">
                     {flash.success}
                 </div>
             )}
 
-            <div className="bg-white rounded-xl shadow border border-gray-100 p-6 max-w-xl mx-auto">
-                <form onSubmit={submit} className="space-y-4">
+            {/* Form */}
+            <div className="bg-white rounded-xl border border-neutral-200 shadow-sm p-6">
+                <form onSubmit={submit} className="space-y-5">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
+                        <label className="block text-sm font-medium text-neutral-700">
                             Nama
                         </label>
                         <input
                             type="text"
                             value={data.name}
                             onChange={(e) => setData("name", e.target.value)}
-                            className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+                            className="mt-1 block w-full rounded-lg border border-neutral-200 focus:border-blue-500 focus:ring-blue-500 p-2.5 text-sm text-neutral-800"
                         />
                         {errors.name && (
-                            <p className="text-red-500 text-sm mt-1">
+                            <p className="text-rose-600 text-sm mt-1">
                                 {errors.name}
                             </p>
                         )}
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
+                        <label className="block text-sm font-medium text-neutral-700">
                             Email
                         </label>
                         <input
                             type="email"
                             value={data.email}
                             onChange={(e) => setData("email", e.target.value)}
-                            className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+                            className="mt-1 block w-full rounded-lg border border-neutral-200 focus:border-blue-500 focus:ring-blue-500 p-2.5 text-sm text-neutral-800"
                         />
                         {errors.email && (
-                            <p className="text-red-500 text-sm mt-1">
+                            <p className="text-rose-600 text-sm mt-1">
                                 {errors.email}
                             </p>
                         )}
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Password Baru (Opsional)
-                        </label>
-                        <input
-                            type="password"
-                            value={data.password}
-                            onChange={(e) =>
-                                setData("password", e.target.value)
-                            }
-                            className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
-                        />
+                    <div className="grid sm:grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-neutral-700">
+                                Password Baru
+                            </label>
+                            <input
+                                type="password"
+                                value={data.password}
+                                onChange={(e) =>
+                                    setData("password", e.target.value)
+                                }
+                                className="mt-1 block w-full rounded-lg border border-neutral-200 focus:border-blue-500 focus:ring-blue-500 p-2.5 text-sm"
+                                placeholder="Opsional"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-neutral-700">
+                                Konfirmasi Password
+                            </label>
+                            <input
+                                type="password"
+                                value={data.password_confirmation}
+                                onChange={(e) =>
+                                    setData(
+                                        "password_confirmation",
+                                        e.target.value
+                                    )
+                                }
+                                className="mt-1 block w-full rounded-lg border border-neutral-200 focus:border-blue-500 focus:ring-blue-500 p-2.5 text-sm"
+                                placeholder="Ulangi password"
+                            />
+                            {errors.password && (
+                                <p className="text-rose-600 text-sm mt-1">
+                                    {errors.password}
+                                </p>
+                            )}
+                        </div>
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Konfirmasi Password
-                        </label>
-                        <input
-                            type="password"
-                            value={data.password_confirmation}
-                            onChange={(e) =>
-                                setData("password_confirmation", e.target.value)
-                            }
-                            className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
-                        />
-                        {errors.password && (
-                            <p className="text-red-500 text-sm mt-1">
-                                {errors.password}
-                            </p>
-                        )}
-                    </div>
-
-                    <div className="flex items-center space-x-2">
+                    <div className="flex justify-end pt-2">
                         <button
                             type="submit"
                             disabled={processing}
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition"
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium transition active:scale-[0.98]"
                         >
                             Simpan Perubahan
                         </button>

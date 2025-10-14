@@ -6,16 +6,16 @@ export default function MemberLayout({ children }) {
     const current = (name) => route().current(name);
 
     return (
-        <div className="min-h-screen bg-gray-50 text-gray-800">
+        <div className="min-h-screen bg-neutral-50 text-neutral-800 font-inter">
             {/* Header */}
-            <header className="bg-white border-b border-gray-200 shadow-sm">
+            <header className="bg-white border-b border-neutral-200">
                 <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
                     {/* Left */}
                     <div className="flex items-center gap-8">
-                        <h1 className="text-xl font-semibold text-gray-900 tracking-tight">
-                            📖 LibSys
+                        <h1 className="text-lg font-semibold text-neutral-900 tracking-tight">
+                            LibSys
                         </h1>
-                        <nav className="hidden sm:flex gap-2">
+                        <nav className="hidden sm:flex gap-4">
                             <NavLink
                                 href={route("member.dashboard")}
                                 active={current("member.dashboard")}
@@ -38,13 +38,13 @@ export default function MemberLayout({ children }) {
                                 href={route("member.reservations.index")}
                                 active={current("member.reservations.index")}
                             >
-                                Reservasi Saya
+                                Reservasi
                             </NavLink>
                             <NavLink
                                 href={route("member.fines.index")}
                                 active={current("member.fines.index")}
                             >
-                                Denda Saya
+                                Denda
                             </NavLink>
                             <NavLink
                                 href={route("member.profile.edit")}
@@ -57,14 +57,14 @@ export default function MemberLayout({ children }) {
 
                     {/* Right */}
                     <div className="flex items-center gap-3">
-                        <span className="text-sm text-gray-600 font-medium">
+                        <span className="text-sm text-neutral-600 font-medium">
                             {auth.user.name}
                         </span>
                         <Link
                             href={route("logout")}
                             method="post"
                             as="button"
-                            className="px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md transition-all active:scale-[0.98]"
+                            className="px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md transition-all active:scale-[0.97]"
                         >
                             Logout
                         </Link>
@@ -73,7 +73,7 @@ export default function MemberLayout({ children }) {
             </header>
 
             {/* Content */}
-            <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+            <main className="max-w-7xl mx-auto px-6 py-10 space-y-8">
                 {children}
             </main>
         </div>

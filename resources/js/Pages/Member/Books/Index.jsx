@@ -5,118 +5,87 @@ export default function Index({ books, categories, filters }) {
     const { flash } = usePage().props;
 
     return (
-        <div className="min-h-screen bg-gray-50">
-            <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
-                {/* Header Section */}
-                <div className="space-y-2">
-                    <h1 className="text-3xl font-semibold text-gray-900 tracking-tight">
-                        Katalog Buku
-                    </h1>
-                    <p className="text-gray-500 text-sm">
-                        Jelajahi koleksi buku perpustakaan kami
-                    </p>
+        <div className="space-y-10">
+            {/* Header */}
+            <div className="flex flex-col space-y-1">
+                <h1 className="text-2xl font-semibold text-neutral-900 tracking-tight">
+                    Katalog Buku
+                </h1>
+                <p className="text-neutral-500 text-sm">
+                    Jelajahi dan pinjam buku dari koleksi perpustakaan LibSys.
+                </p>
+            </div>
+
+            {/* Flash Messages */}
+            {flash.success && (
+                <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-lg shadow-sm text-sm">
+                    {flash.success}
                 </div>
-
-                {/* Flash Messages */}
-                {flash.success && (
-                    <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 px-5 py-3.5 rounded-xl flex items-start gap-3 shadow-sm">
-                        <svg
-                            className="w-5 h-5 mt-0.5 flex-shrink-0"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                        >
-                            <path
-                                fillRule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                clipRule="evenodd"
-                            />
-                        </svg>
-                        <span>{flash.success}</span>
-                    </div>
-                )}
-
-                {flash.error && (
-                    <div className="bg-red-50 border border-red-200 text-red-800 px-5 py-3.5 rounded-xl flex items-start gap-3 shadow-sm">
-                        <svg
-                            className="w-5 h-5 mt-0.5 flex-shrink-0"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                        >
-                            <path
-                                fillRule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                clipRule="evenodd"
-                            />
-                        </svg>
-                        <span>{flash.error}</span>
-                    </div>
-                )}
-
-                {/* Search & Filter */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 transition-all hover:shadow-md">
-                    <form
-                        method="get"
-                        className="flex flex-col sm:flex-row gap-4"
-                    >
-                        <div className="flex-1">
-                            <input
-                                type="text"
-                                name="search"
-                                defaultValue={filters.search}
-                                placeholder="Cari judul buku..."
-                                className="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                            />
-                        </div>
-                        <div className="sm:w-56">
-                            <select
-                                name="category"
-                                defaultValue={filters.category || ""}
-                                className="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                            >
-                                <option value="">Semua Kategori</option>
-                                {categories.map((cat) => (
-                                    <option key={cat.id} value={cat.id}>
-                                        {cat.name}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                        <button
-                            type="submit"
-                            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all shadow-sm hover:shadow-md active:scale-[0.98]"
-                        >
-                            Cari
-                        </button>
-                    </form>
+            )}
+            {flash.error && (
+                <div className="bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-lg shadow-sm text-sm">
+                    {flash.error}
                 </div>
+            )}
 
-                {/* Book List */}
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {books.data.length > 0 ? (
-                        books.data.map((book, index) => (
-                            <div
-                                key={book.id}
-                                className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.02] flex flex-col"
-                                style={{
-                                    animation: `fadeIn 0.5s ease-out ${
-                                        index * 0.05
-                                    }s both`,
-                                }}
-                            >
-                                <div className="flex-1 space-y-3">
-                                    <h2 className="text-lg font-semibold text-gray-900 line-clamp-2">
+            {/* Search & Filter */}
+            <div className="bg-white rounded-xl border border-neutral-200 shadow-sm p-6 space-y-4 sm:space-y-0 sm:flex sm:items-center sm:gap-4">
+                <input
+                    type="text"
+                    name="search"
+                    defaultValue={filters.search}
+                    placeholder="Cari judul buku..."
+                    className="flex-1 px-4 py-2.5 border border-neutral-300 rounded-lg text-sm text-neutral-800 placeholder-neutral-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                />
+                <select
+                    name="category"
+                    defaultValue={filters.category || ""}
+                    className="sm:w-56 px-4 py-2.5 border border-neutral-300 rounded-lg text-sm text-neutral-800 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                >
+                    <option value="">Semua Kategori</option>
+                    {categories.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                            {cat.name}
+                        </option>
+                    ))}
+                </select>
+                <button
+                    type="submit"
+                    className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition active:scale-[0.97]"
+                >
+                    Cari
+                </button>
+            </div>
+
+            {/* Book Grid */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {books.data.length > 0 ? (
+                    books.data.map((book, i) => (
+                        <div
+                            key={book.id}
+                            className="bg-white border border-neutral-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-all hover:-translate-y-[2px]"
+                            style={{
+                                animation: `fadeIn 0.4s ease-out ${
+                                    i * 0.05
+                                }s both`,
+                            }}
+                        >
+                            <div className="flex flex-col h-full justify-between space-y-3">
+                                {/* Info */}
+                                <div className="space-y-2">
+                                    <h2 className="text-base font-semibold text-neutral-900 line-clamp-2">
                                         {book.title}
                                     </h2>
-                                    <p className="text-sm text-gray-500">
+                                    <p className="text-sm text-neutral-500">
                                         {book.author ||
                                             "Penulis tidak diketahui"}
                                     </p>
-                                    <div className="flex items-center gap-2">
-                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-gray-100 text-gray-700">
-                                            {book.category?.name}
+                                    {book.category && (
+                                        <span className="inline-block bg-neutral-100 text-neutral-700 text-xs px-2 py-0.5 rounded-md">
+                                            {book.category.name}
                                         </span>
-                                    </div>
-                                    <p className="text-sm text-gray-600">
+                                    )}
+                                    <p className="text-sm text-neutral-600 mt-2">
                                         {book.available_copies > 0 ? (
                                             <span className="flex items-center gap-1.5">
                                                 <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
@@ -125,14 +94,15 @@ export default function Index({ books, categories, filters }) {
                                             </span>
                                         ) : (
                                             <span className="flex items-center gap-1.5">
-                                                <span className="w-2 h-2 rounded-full bg-gray-400"></span>
+                                                <span className="w-2 h-2 rounded-full bg-neutral-400"></span>
                                                 Sedang tidak tersedia
                                             </span>
                                         )}
                                     </p>
                                 </div>
 
-                                <div className="mt-6 space-y-2">
+                                {/* Actions */}
+                                <div className="space-y-2">
                                     <Link
                                         href={
                                             book.available_copies > 0
@@ -149,14 +119,14 @@ export default function Index({ books, categories, filters }) {
                                             book.is_reserved ||
                                             book.is_borrowing
                                         }
-                                        className={`w-full px-4 py-2.5 rounded-lg font-medium text-sm transition-all shadow-sm hover:shadow-md active:scale-[0.98] ${
+                                        className={`w-full px-4 py-2.5 rounded-lg text-sm font-medium transition active:scale-[0.98] ${
                                             book.available_copies > 0
                                                 ? "bg-emerald-500 hover:bg-emerald-600 text-white"
                                                 : "bg-amber-500 hover:bg-amber-600 text-white"
                                         } ${
                                             book.is_reserved ||
                                             book.is_borrowing
-                                                ? "opacity-50 cursor-not-allowed hover:shadow-sm active:scale-100"
+                                                ? "opacity-50 cursor-not-allowed"
                                                 : ""
                                         }`}
                                     >
@@ -170,19 +140,19 @@ export default function Index({ books, categories, filters }) {
                                     </Link>
 
                                     {book.file_path && (
-                                        <div className="flex gap-2 pt-1">
+                                        <div className="flex gap-2">
                                             <a
                                                 href={`/storage/${book.file_path}`}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm hover:shadow-md active:scale-[0.98] text-center"
+                                                className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition active:scale-[0.98] text-center"
                                             >
                                                 Baca E-book
                                             </a>
                                             <a
                                                 href={`/storage/${book.file_path}`}
                                                 download
-                                                className="flex-1 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm hover:shadow-md active:scale-[0.98] text-center"
+                                                className="flex-1 px-4 py-2 bg-neutral-600 hover:bg-neutral-700 text-white text-sm font-medium rounded-lg transition active:scale-[0.98] text-center"
                                             >
                                                 Unduh
                                             </a>
@@ -190,48 +160,47 @@ export default function Index({ books, categories, filters }) {
                                     )}
                                 </div>
                             </div>
-                        ))
-                    ) : (
-                        <div className="col-span-full flex flex-col items-center justify-center py-16 px-4">
-                            <div className="text-6xl mb-4">📭</div>
-                            <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                                Belum ada buku ditemukan
-                            </h3>
-                            <p className="text-sm text-gray-500 text-center max-w-sm">
-                                Coba ubah filter pencarian atau kata kunci yang
-                                Anda gunakan
-                            </p>
                         </div>
-                    )}
-                </div>
-
-                {/* Pagination */}
-                {books.links && books.data.length > 0 && (
-                    <div className="flex justify-center items-center gap-2 pt-4">
-                        {books.links.map((link, i) => (
-                            <Link
-                                key={i}
-                                href={link.url || "#"}
-                                className={`min-w-[2.5rem] px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                                    link.active
-                                        ? "bg-blue-600 text-white shadow-sm"
-                                        : link.url
-                                        ? "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400"
-                                        : "bg-gray-100 text-gray-400 cursor-not-allowed"
-                                }`}
-                                dangerouslySetInnerHTML={{ __html: link.label }}
-                            />
-                        ))}
+                    ))
+                ) : (
+                    <div className="col-span-full flex flex-col items-center justify-center py-20 text-center">
+                        <p className="text-neutral-400 text-5xl mb-3">📚</p>
+                        <h3 className="text-lg font-semibold text-neutral-800">
+                            Tidak ada buku ditemukan
+                        </h3>
+                        <p className="text-sm text-neutral-500 max-w-sm">
+                            Coba ubah kategori atau kata kunci pencarian kamu.
+                        </p>
                     </div>
                 )}
             </div>
 
-            {/* Fade-in Animation */}
+            {/* Pagination */}
+            {books.links && books.data.length > 0 && (
+                <div className="flex justify-center gap-2 pt-6">
+                    {books.links.map((link, i) => (
+                        <Link
+                            key={i}
+                            href={link.url || "#"}
+                            className={`px-3 py-1.5 rounded text-sm font-medium transition ${
+                                link.active
+                                    ? "bg-blue-600 text-white"
+                                    : link.url
+                                    ? "bg-white border border-neutral-300 text-neutral-700 hover:bg-neutral-50"
+                                    : "bg-neutral-100 text-neutral-400 cursor-not-allowed"
+                            }`}
+                            dangerouslySetInnerHTML={{ __html: link.label }}
+                        />
+                    ))}
+                </div>
+            )}
+
+            {/* Animation */}
             <style>{`
                 @keyframes fadeIn {
                     from {
                         opacity: 0;
-                        transform: translateY(10px);
+                        transform: translateY(6px);
                     }
                     to {
                         opacity: 1;

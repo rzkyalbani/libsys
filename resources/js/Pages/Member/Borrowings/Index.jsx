@@ -4,18 +4,17 @@ import MemberLayout from "../MemberLayout";
 export default function Index({ borrowings }) {
     const { flash } = usePage().props;
 
-    // Warna status biar konsisten dan enak dibaca
     const statusBadge = (status) => {
-        const colorMap = {
-            requested: "bg-yellow-100 text-yellow-700",
-            borrowed: "bg-blue-100 text-blue-700",
-            returned: "bg-green-100 text-green-700",
-            cancelled: "bg-red-100 text-red-700",
+        const map = {
+            requested: "bg-amber-50 text-amber-700",
+            borrowed: "bg-blue-50 text-blue-700",
+            returned: "bg-emerald-50 text-emerald-700",
+            cancelled: "bg-rose-50 text-rose-700",
         };
         return (
             <span
-                className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    colorMap[status] || "bg-gray-100 text-gray-600"
+                className={`px-2.5 py-1 rounded-full text-xs font-medium ${
+                    map[status] || "bg-neutral-100 text-neutral-600"
                 }`}
             >
                 {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -24,77 +23,92 @@ export default function Index({ borrowings }) {
     };
 
     return (
-        <div className="p-6 space-y-6">
+        <div className="space-y-8">
             {/* Header */}
-            <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold text-gray-800">
-                    🔄 Riwayat Peminjaman
+            <div className="flex flex-col space-y-1">
+                <h1 className="text-2xl font-semibold text-neutral-900 tracking-tight">
+                    Riwayat Peminjaman
                 </h1>
+                <p className="text-neutral-500 text-sm">
+                    Semua aktivitas peminjaman buku kamu.
+                </p>
             </div>
 
             {/* Flash messages */}
             {flash.success && (
-                <div className="bg-green-100 text-green-700 p-3 rounded-md shadow-sm">
+                <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-lg shadow-sm text-sm">
                     {flash.success}
                 </div>
             )}
             {flash.error && (
-                <div className="bg-red-100 text-red-700 p-3 rounded-md shadow-sm">
+                <div className="bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-lg shadow-sm text-sm">
                     {flash.error}
                 </div>
             )}
 
             {/* Table */}
-            <div className="bg-white rounded-xl shadow border border-gray-100 overflow-hidden">
-                <table className="min-w-full text-left">
-                    <thead className="bg-gray-50 border-b text-sm text-gray-600 uppercase">
+            <div className="bg-white rounded-xl border border-neutral-200 shadow-sm overflow-x-auto">
+                <table className="min-w-full text-sm text-neutral-700">
+                    <thead className="bg-neutral-50 border-b">
                         <tr>
-                            <th className="px-4 py-3">Judul Buku</th>
-                            <th className="px-4 py-3">Tanggal Pinjam</th>
-                            <th className="px-4 py-3">Jatuh Tempo</th>
-                            <th className="px-4 py-3">Tanggal Kembali</th>
-                            <th className="px-4 py-3">Status</th>
-                            <th className="px-4 py-3">Denda</th>
+                            <th className="px-5 py-3 text-left font-semibold">
+                                Judul Buku
+                            </th>
+                            <th className="px-5 py-3 text-left font-semibold">
+                                Tanggal Pinjam
+                            </th>
+                            <th className="px-5 py-3 text-left font-semibold">
+                                Jatuh Tempo
+                            </th>
+                            <th className="px-5 py-3 text-left font-semibold">
+                                Tanggal Kembali
+                            </th>
+                            <th className="px-5 py-3 text-left font-semibold">
+                                Status
+                            </th>
+                            <th className="px-5 py-3 text-left font-semibold">
+                                Denda
+                            </th>
                         </tr>
                     </thead>
-                    <tbody className="text-gray-700">
+                    <tbody>
                         {borrowings.data.length > 0 ? (
                             borrowings.data.map((item) => (
                                 <tr
                                     key={item.id}
-                                    className="border-t hover:bg-gray-50 transition"
+                                    className="border-b last:border-none hover:bg-neutral-50 transition-all"
                                 >
-                                    <td className="px-4 py-3 font-medium">
+                                    <td className="px-5 py-3 font-medium text-neutral-900">
                                         {item.book?.title || "—"}
                                     </td>
-                                    <td className="px-4 py-3 text-sm text-gray-600">
+                                    <td className="px-5 py-3 text-neutral-500">
                                         {item.borrow_date
                                             ? new Date(
                                                   item.borrow_date
                                               ).toLocaleDateString("id-ID")
                                             : "—"}
                                     </td>
-                                    <td className="px-4 py-3 text-sm text-gray-600">
+                                    <td className="px-5 py-3 text-neutral-500">
                                         {item.due_date
                                             ? new Date(
                                                   item.due_date
                                               ).toLocaleDateString("id-ID")
                                             : "—"}
                                     </td>
-                                    <td className="px-4 py-3 text-sm text-gray-600">
+                                    <td className="px-5 py-3 text-neutral-500">
                                         {item.return_date
                                             ? new Date(
                                                   item.return_date
                                               ).toLocaleDateString("id-ID")
                                             : "—"}
                                     </td>
-                                    <td className="px-4 py-3">
+                                    <td className="px-5 py-3">
                                         {statusBadge(item.status)}
                                     </td>
-                                    <td className="px-4 py-3 text-sm">
+                                    <td className="px-5 py-3">
                                         {item.fine_amount > 0 ? (
                                             <div className="flex flex-col">
-                                                <span className="text-red-600 font-semibold">
+                                                <span className="text-rose-600 font-semibold">
                                                     Rp{" "}
                                                     {item.fine_amount.toLocaleString(
                                                         "id-ID"
@@ -103,8 +117,8 @@ export default function Index({ borrowings }) {
                                                 <span
                                                     className={`text-xs font-medium mt-1 ${
                                                         item.is_fine_paid
-                                                            ? "text-green-600"
-                                                            : "text-red-500"
+                                                            ? "text-emerald-600"
+                                                            : "text-rose-600"
                                                     }`}
                                                 >
                                                     {item.is_fine_paid
@@ -113,7 +127,7 @@ export default function Index({ borrowings }) {
                                                 </span>
                                             </div>
                                         ) : (
-                                            <span className="text-gray-500 text-sm">
+                                            <span className="text-neutral-400 text-sm">
                                                 Tidak ada denda
                                             </span>
                                         )}
@@ -124,7 +138,7 @@ export default function Index({ borrowings }) {
                             <tr>
                                 <td
                                     colSpan="6"
-                                    className="text-center py-6 text-gray-500"
+                                    className="text-center py-10 text-neutral-500 italic"
                                 >
                                     Tidak ada riwayat peminjaman.
                                 </td>
@@ -136,15 +150,15 @@ export default function Index({ borrowings }) {
 
             {/* Pagination */}
             {borrowings.links && borrowings.links.length > 1 && (
-                <div className="flex justify-center mt-6 gap-2">
+                <div className="flex justify-center gap-2 pt-4">
                     {borrowings.links.map((link, i) => (
                         <Link
                             key={i}
                             href={link.url || "#"}
-                            className={`px-3 py-1 rounded text-sm ${
+                            className={`px-3 py-1.5 rounded text-sm transition ${
                                 link.active
                                     ? "bg-blue-600 text-white"
-                                    : "bg-gray-200 hover:bg-gray-300"
+                                    : "bg-neutral-200 hover:bg-neutral-300 text-neutral-700"
                             }`}
                             dangerouslySetInnerHTML={{ __html: link.label }}
                         />
