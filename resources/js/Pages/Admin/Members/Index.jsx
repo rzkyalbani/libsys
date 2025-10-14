@@ -16,6 +16,13 @@ export default function Index({ members }) {
                         Kelola data anggota perpustakaan
                     </p>
                 </div>
+
+                <Link
+                    href={route("admin.members.create")}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-sm hover:shadow-md transition-all"
+                >
+                    + Tambah Member
+                </Link>
             </div>
 
             {/* Flash Message */}
@@ -62,7 +69,17 @@ export default function Index({ members }) {
                                             member.created_at
                                         ).toLocaleDateString("id-ID")}
                                     </td>
-                                    <td className="px-5 py-3">
+                                    <td className="px-5 py-3 space-x-3">
+                                        <Link
+                                            href={route(
+                                                "admin.members.edit",
+                                                member.id
+                                            )}
+                                            className="text-blue-600 hover:text-blue-800 font-medium text-sm"
+                                        >
+                                            Edit
+                                        </Link>
+
                                         <Link
                                             as="button"
                                             method="delete"

@@ -24,8 +24,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     ->name('dashboard');
     Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
     Route::resource('books', \App\Http\Controllers\Admin\BookController::class);
-    Route::resource('members', \App\Http\Controllers\Admin\MemberController::class)
-    ->only(['index', 'destroy']);
+    Route::resource('members', \App\Http\Controllers\Admin\MemberController::class)->except(['show']);
     Route::get('/borrowings', [\App\Http\Controllers\Admin\BorrowingController::class, 'index'])->name('borrowings.index');
     Route::patch('/borrowings/{borrowing}', [\App\Http\Controllers\Admin\BorrowingController::class, 'update'])->name('borrowings.update');
     Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
