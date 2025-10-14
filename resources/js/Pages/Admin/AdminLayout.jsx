@@ -48,6 +48,12 @@ export default function AdminLayout({ children }) {
                         📦 Peminjaman
                     </NavLink>
                     <NavLink
+                        href={route("admin.fines.index")}
+                        active={current("admin.fines.*")}
+                    >
+                        💸 Denda
+                    </NavLink>
+                    <NavLink
                         href={route("admin.settings.index")}
                         active={current("admin.settings.*")}
                     >

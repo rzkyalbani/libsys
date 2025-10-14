@@ -30,6 +30,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::patch('/borrowings/{borrowing}', [\App\Http\Controllers\Admin\BorrowingController::class, 'update'])->name('borrowings.update');
     Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
+    Route::get('/fines', [\App\Http\Controllers\Admin\FineController::class, 'index'])->name('fines.index');
+    Route::post('/fines/{borrowing}/mark-paid', [\App\Http\Controllers\Admin\FineController::class, 'markPaid'])->name('fines.markPaid');
 }); 
 
 Route::middleware(['auth', 'role:member'])->prefix('member')->name('member.')->group(function () {
