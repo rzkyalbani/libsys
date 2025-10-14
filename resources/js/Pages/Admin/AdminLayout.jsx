@@ -1,39 +1,84 @@
-import { Link, usePage } from "@inertiajs/react";
+import { usePage } from "@inertiajs/react";
+import NavLink from "@/Components/NavLink";
 
 export default function AdminLayout({ children }) {
     const { auth, flash } = usePage().props;
 
+    const current = (name) => route().current(name);
+
     return (
-        <div className="min-h-screen bg-gray-50 text-gray-800">
-            {/* Header */}
-            <header className="bg-white shadow p-4 flex justify-between items-center">
-                <h1 className="text-xl font-bold">📚 LibSys Admin Panel</h1>
-                <div className="flex items-center gap-3">
-                    <span className="text-sm">Halo, {auth.user.name}</span>
-                    <Link
-                        href={route("logout")}
-                        method="post"
-                        as="button"
-                        className="text-red-600 hover:underline"
-                    >
-                        Logout
-                    </Link>
+        <div className="min-h-screen flex bg-gray-50 text-gray-800">
+            {/* Sidebar */}
+            <aside className="w-64 bg-white border-r p-4 space-y-2 sticky top-0 h-screen">
+                <div className="mb-4">
+                    <h1 className="text-lg font-bold">📚 LibSys Admin</h1>
+                    <p className="text-xs text-gray-500">
+                        Hi, {auth.user.name}
+                    </p>
                 </div>
-            </header>
 
-            {/* Main Content */}
-            <main className="p-6">
-                {flash.success && (
-                    <div className="mb-4 bg-green-100 text-green-700 p-2 rounded">
-                        {flash.success}
+                <nav className="space-y-1">
+                    <NavLink
+                        href={route("admin.dashboard")}
+                        active={current("admin.dashboard")}
+                    >
+                        🏠 Dashboard
+                    </NavLink>
+                    <NavLink
+                        href={route("admin.books.index")}
+                        active={current("admin.books.*")}
+                    >
+                        📚 Buku
+                    </NavLink>
+                    <NavLink
+                        href={route("admin.categories.index")}
+                        active={current("admin.categories.*")}
+                    >
+                        🏷️ Kategori
+                    </NavLink>
+                    <NavLink
+                        href={route("admin.members.index")}
+                        active={current("admin.members.*")}
+                    >
+                        👥 Member
+                    </NavLink>
+                    <NavLink
+                        href={route("admin.borrowings.index")}
+                        active={current("admin.borrowings.*")}
+                    >
+                        📦 Peminjaman
+                    </NavLink>
+                    <NavLink
+                        href={route("admin.settings.index")}
+                        active={current("admin.settings.*")}
+                    >
+                        ⚙️ Pengaturan
+                    </NavLink>
+                </nav>
+
+                <form method="post" action={route("logout")} className="mt-6">
+                    <button className="w-full text-left px-3 py-2 rounded-md text-sm text-red-600 hover:bg-red-50">
+                        Logout
+                    </button>
+                </form>
+            </aside>
+
+            {/* Main */}
+            <main className="flex-1 p-6">
+                {(flash?.success || flash?.error) && (
+                    <div className="mb-4">
+                        {flash.success && (
+                            <div className="bg-green-100 text-green-700 p-2 rounded">
+                                {flash.success}
+                            </div>
+                        )}
+                        {flash.error && (
+                            <div className="bg-red-100 text-red-700 p-2 rounded">
+                                {flash.error}
+                            </div>
+                        )}
                     </div>
                 )}
-                {flash.error && (
-                    <div className="mb-4 bg-red-100 text-red-700 p-2 rounded">
-                        {flash.error}
-                    </div>
-                )}
-
                 {children}
             </main>
         </div>
