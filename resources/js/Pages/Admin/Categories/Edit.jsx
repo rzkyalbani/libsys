@@ -15,13 +15,17 @@ export default function Edit({ category }) {
     return (
         <div className="p-6 space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold text-gray-800">🏷️ Edit Kategori</h1>
+                <h1 className="text-3xl font-bold text-gray-800">
+                    🏷️ Edit Kategori
+                </h1>
             </div>
 
             <div className="bg-white rounded-xl shadow border border-gray-100 p-6">
                 <form onSubmit={submit} className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Nama</label>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Nama
+                        </label>
                         <input
                             type="text"
                             value={data.name}
@@ -29,15 +33,21 @@ export default function Edit({ category }) {
                             className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
                         />
                         {errors.name && (
-                            <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+                            <p className="text-red-500 text-sm mt-1">
+                                {errors.name}
+                            </p>
                         )}
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Deskripsi</label>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Deskripsi
+                        </label>
                         <textarea
                             value={data.description}
-                            onChange={(e) => setData("description", e.target.value)}
+                            onChange={(e) =>
+                                setData("description", e.target.value)
+                            }
                             className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
                         />
                     </div>
@@ -50,7 +60,12 @@ export default function Edit({ category }) {
                         >
                             Update
                         </button>
-                        <a href={route('admin.categories.index')} className="text-sm text-gray-500 hover:underline">Batal</a>
+                        <a
+                            href={route("admin.categories.index")}
+                            className="text-sm text-gray-500 hover:underline"
+                        >
+                            Batal
+                        </a>
                     </div>
                 </form>
             </div>

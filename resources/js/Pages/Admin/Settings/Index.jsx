@@ -20,7 +20,9 @@ export default function Index({ settings }) {
     return (
         <div className="p-6 space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold text-gray-800">⚙️ Pengaturan Sistem</h1>
+                <h1 className="text-3xl font-bold text-gray-800">
+                    ⚙️ Pengaturan Sistem
+                </h1>
             </div>
 
             {flash.success && (
@@ -32,7 +34,9 @@ export default function Index({ settings }) {
             <div className="bg-white rounded-xl shadow border border-gray-100 p-6 max-w-lg">
                 <form onSubmit={submit} className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Denda per Hari (Rp)</label>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Denda per Hari (Rp)
+                        </label>
                         <input
                             type="number"
                             value={data.fine_rate_per_day}
@@ -44,7 +48,9 @@ export default function Index({ settings }) {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Lama Peminjaman Maksimal (hari)</label>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Lama Peminjaman Maksimal (hari)
+                        </label>
                         <input
                             type="number"
                             value={data.max_borrow_days}
@@ -56,7 +62,9 @@ export default function Index({ settings }) {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Auto Cancel (jam)</label>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Auto Cancel (jam)
+                        </label>
                         <input
                             type="number"
                             value={data.auto_cancel_hours}
@@ -68,7 +76,9 @@ export default function Index({ settings }) {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Batas Pinjaman Aktif per Member</label>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Batas Pinjaman Aktif per Member
+                        </label>
                         <input
                             type="number"
                             value={data.max_active_borrows_per_member}
