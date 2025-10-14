@@ -22,7 +22,7 @@ class FineController extends Controller
     public function markPaid(Borrowing $borrowing)
     {
         if ($borrowing->fine_amount <= 0) {
-            return back()->withErrors(['error' => 'Pinjaman ini tidak memiliki denda.']);
+            return back()->with('error', 'Pinjaman ini tidak memiliki denda.');
         }
 
         $borrowing->update([

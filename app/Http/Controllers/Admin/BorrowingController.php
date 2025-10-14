@@ -46,7 +46,7 @@ class BorrowingController extends Controller
             if ($now->gt($borrowing->due_date)) {
                 $daysLate = $now->diffInDays($borrowing->due_date);
                 $fineRate = (int) Setting::get('fine_rate_per_day', 1000);
-                $fine = $daysLate * $fineRate;
+                $fine = $daysLate * $fineRate * -1;
             }
 
             $borrowing->update([

@@ -17,12 +17,15 @@ class Borrowing extends Model
         'due_date',
         'return_date',
         'fine_amount',
+        'is_fine_paid',
+        'fine_paid_at',
     ];
 
     protected $casts = [
         'borrow_date' => 'date',
         'due_date'    => 'date', 
         'return_date' => 'date',
+        'fine_paid_at' => 'date'
     ];
 
     public function user()
