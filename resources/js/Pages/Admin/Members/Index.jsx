@@ -5,33 +5,41 @@ export default function Index({ members }) {
     const { flash } = usePage().props;
 
     return (
-        <div className="p-6 space-y-6">
-            <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold text-gray-800">
-                    🧑 Daftar Member
-                </h1>
+        <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+            {/* Header */}
+            <div className="flex justify-between items-center">
+                <div>
+                    <h1 className="text-2xl font-semibold text-gray-900 tracking-tight">
+                        Daftar Member
+                    </h1>
+                    <p className="text-sm text-gray-500">
+                        Kelola data anggota perpustakaan
+                    </p>
+                </div>
             </div>
 
+            {/* Flash Message */}
             {flash.success && (
-                <div className="bg-green-100 text-green-700 p-3 rounded-md shadow-sm">
+                <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-lg shadow-sm text-sm">
                     {flash.success}
                 </div>
             )}
 
-            <div className="bg-white rounded-xl shadow border border-gray-100 overflow-hidden">
-                <table className="min-w-full text-sm">
+            {/* Table */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <table className="min-w-full text-sm text-gray-700">
                     <thead className="bg-gray-50 border-b">
                         <tr>
-                            <th className="px-4 py-3 text-left font-semibold">
+                            <th className="px-5 py-3 text-left font-semibold text-gray-600">
                                 Nama
                             </th>
-                            <th className="px-4 py-3 text-left font-semibold">
+                            <th className="px-5 py-3 text-left font-semibold text-gray-600">
                                 Email
                             </th>
-                            <th className="px-4 py-3 text-left font-semibold">
+                            <th className="px-5 py-3 text-left font-semibold text-gray-600">
                                 Tanggal Bergabung
                             </th>
-                            <th className="px-4 py-3 text-left font-semibold">
+                            <th className="px-5 py-3 text-left font-semibold text-gray-600">
                                 Aksi
                             </th>
                         </tr>
@@ -41,18 +49,20 @@ export default function Index({ members }) {
                             members.data.map((member) => (
                                 <tr
                                     key={member.id}
-                                    className="border-b last:border-none hover:bg-gray-50"
+                                    className="border-b last:border-none hover:bg-gray-50 transition-all"
                                 >
-                                    <td className="px-4 py-2">{member.name}</td>
-                                    <td className="px-4 py-2">
+                                    <td className="px-5 py-3 font-medium text-gray-900">
+                                        {member.name}
+                                    </td>
+                                    <td className="px-5 py-3">
                                         {member.email}
                                     </td>
-                                    <td className="px-4 py-2">
+                                    <td className="px-5 py-3 text-gray-600">
                                         {new Date(
                                             member.created_at
                                         ).toLocaleDateString("id-ID")}
                                     </td>
-                                    <td className="px-4 py-2">
+                                    <td className="px-5 py-3">
                                         <Link
                                             as="button"
                                             method="delete"
@@ -60,7 +70,15 @@ export default function Index({ members }) {
                                                 "admin.members.destroy",
                                                 member
                                             )}
-                                            className="text-red-600 hover:underline"
+                                            onClick={(e) => {
+                                                if (
+                                                    !confirm(
+                                                        `Hapus member "${member.name}"?`
+                                                    )
+                                                )
+                                                    e.preventDefault();
+                                            }}
+                                            className="text-rose-600 hover:text-rose-800 font-medium text-sm"
                                         >
                                             Hapus
                                         </Link>
@@ -71,7 +89,7 @@ export default function Index({ members }) {
                             <tr>
                                 <td
                                     colSpan="4"
-                                    className="text-center text-gray-500 py-6 italic"
+                                    className="text-center text-gray-500 py-10 italic"
                                 >
                                     Belum ada member.
                                 </td>
