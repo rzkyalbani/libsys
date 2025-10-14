@@ -77,20 +77,6 @@ export default function Index({ books, categories, filters }) {
                                     ? `${book.available_copies} eksemplar tersedia`
                                     : "Sedang tidak tersedia"}
                             </p>
-                            {/* <Link
-                                as="button"
-                                method="post"
-                                href={route("member.borrow.store")}
-                                data={{ book_id: book.id }}
-                                disabled={book.available_copies <= 0}
-                                className={`${
-                                    book.available_copies > 0
-                                        ? "bg-green-600 hover:bg-green-700"
-                                        : "bg-gray-400 cursor-not-allowed"
-                                } text-white px-4 py-2 rounded-md transition-all`}
-                            >
-                                Pinjam
-                            </Link> */}
                             <Link
                                 href={
                                     book.available_copies > 0
@@ -100,17 +86,22 @@ export default function Index({ books, categories, filters }) {
                                 data={{ book_id: book.id }}
                                 method="post"
                                 as="button"
-                                disabled={
-                                    book.available_copies <= 0 &&
-                                    book.is_reserved
-                                }
-                                className={`${
+                                disabled={book.is_reserved || book.is_borrowing}
+                                className={`px-4 py-2 rounded text-white transition-all ${
                                     book.available_copies > 0
                                         ? "bg-green-600 hover:bg-green-700"
                                         : "bg-yellow-600 hover:bg-yellow-700"
-                                } text-white px-4 py-2 rounded transition-all`}
+                                } ${
+                                    book.is_reserved || book.is_borrowing
+                                        ? "opacity-50 cursor-not-allowed hover:bg-gray-600"
+                                        : ""
+                                }`}
                             >
-                                {book.available_copies > 0
+                                {book.is_borrowing
+                                    ? "Sedang Dipinjam"
+                                    : book.is_reserved
+                                    ? "Sudah Dipesan"
+                                    : book.available_copies > 0
                                     ? "Pinjam"
                                     : "Reservasi"}
                             </Link>

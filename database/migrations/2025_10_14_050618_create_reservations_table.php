@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('book_id')->constrained()->cascadeOnDelete();
-            $table->enum('status', ['waiting', 'notified', 'cancelled'])->default('waiting');
+            $table->enum('status', ['waiting', 'notified'])->default('waiting');
             $table->timestamp('notified_at')->nullable();
             $table->timestamps();
         });
