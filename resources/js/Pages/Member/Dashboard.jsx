@@ -66,6 +66,19 @@ export default function Dashboard({ auth }) {
                         ketersediaannya.
                     </p>
                 </Link>
+
+                <Link
+                    href={route("member.fines.index")}
+                    className="block bg-white p-6 rounded-2xl shadow hover:shadow-lg transition-all border border-gray-100"
+                >
+                    <h2 className="text-xl font-semibold mb-2">
+                        💰 Denda Saya
+                    </h2>
+                    <p className="text-gray-600 text-sm">
+                        Lihat dan tandai pembayaran denda buku yang terlambat
+                        dikembalikan.
+                    </p>
+                </Link>
             </div>
         </div>
     );
