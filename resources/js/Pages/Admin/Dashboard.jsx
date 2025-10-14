@@ -1,7 +1,16 @@
 import { Link } from "@inertiajs/react";
 import AdminLayout from "./AdminLayout";
+import {
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer,
+} from "recharts";
 
-export default function Dashboard({ auth, stats }) {
+export default function Dashboard({ auth, stats, chartData }) {
     const summary = [
         {
             title: "Total Buku",
@@ -83,6 +92,35 @@ export default function Dashboard({ auth, stats }) {
                         <p className="text-2xl font-bold">{item.value}</p>
                     </div>
                 ))}
+            </section>
+
+            {/* Grafik Aktivitas Bulanan */}
+            <section className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <h2 className="text-xl font-bold mb-4 text-gray-800">
+                    📈 Aktivitas Peminjaman per Bulan
+                </h2>
+
+                {chartData.length > 0 ? (
+                    <ResponsiveContainer width="100%" height={300}>
+                        <LineChart data={chartData}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+                            <YAxis allowDecimals={false} />
+                            <Tooltip />
+                            <Line
+                                type="monotone"
+                                dataKey="total"
+                                stroke="#3b82f6"
+                                strokeWidth={3}
+                                dot={{ r: 4 }}
+                            />
+                        </LineChart>
+                    </ResponsiveContainer>
+                ) : (
+                    <p className="text-gray-500 italic text-center py-10">
+                        Belum ada data peminjaman untuk ditampilkan.
+                    </p>
+                )}
             </section>
 
             {/* Navigation Cards */}
