@@ -13,34 +13,42 @@ export default function Edit({ category }) {
     };
 
     return (
-        <div className="p-6 space-y-6">
-            <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold text-gray-800">
-                    🏷️ Edit Kategori
-                </h1>
+        <div className="max-w-3xl mx-auto px-6 py-8 space-y-8">
+            {/* Header */}
+            <div className="flex justify-between items-center">
+                <div>
+                    <h1 className="text-2xl font-semibold text-gray-900 tracking-tight">
+                        Edit Kategori
+                    </h1>
+                    <p className="text-sm text-gray-500">
+                        Ubah detail kategori buku yang sudah ada
+                    </p>
+                </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow border border-gray-100 p-6">
-                <form onSubmit={submit} className="space-y-4">
+            {/* Form Card */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <form onSubmit={submit} className="space-y-6">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Nama
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                            Nama Kategori
                         </label>
                         <input
                             type="text"
                             value={data.name}
                             onChange={(e) => setData("name", e.target.value)}
-                            className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 transition-all"
+                            placeholder="Nama kategori"
                         />
                         {errors.name && (
-                            <p className="text-red-500 text-sm mt-1">
+                            <p className="text-rose-600 text-sm mt-1">
                                 {errors.name}
                             </p>
                         )}
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
                             Deskripsi
                         </label>
                         <textarea
@@ -48,21 +56,23 @@ export default function Edit({ category }) {
                             onChange={(e) =>
                                 setData("description", e.target.value)
                             }
-                            className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 transition-all"
+                            placeholder="Deskripsi kategori"
                         />
                     </div>
 
-                    <div className="flex items-center space-x-2">
+                    {/* Buttons */}
+                    <div className="flex gap-3 pt-2">
                         <button
                             type="submit"
                             disabled={processing}
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition"
+                            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-sm hover:shadow-md active:scale-[0.98] transition-all"
                         >
                             Update
                         </button>
                         <a
                             href={route("admin.categories.index")}
-                            className="text-sm text-gray-500 hover:underline"
+                            className="px-6 py-2.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
                         >
                             Batal
                         </a>
