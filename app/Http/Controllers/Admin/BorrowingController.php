@@ -25,6 +25,7 @@ class BorrowingController extends Controller
     {
         $action = $request->action;
 
+        // === APPROVE REQUEST ===
         if ($action === 'approve' && $borrowing->status === 'requested') {
             $borrowDays = (int) Setting::get('max_borrow_days', 7);
 
@@ -37,6 +38,7 @@ class BorrowingController extends Controller
             return back()->with('success', 'Peminjaman disetujui.');
         }
 
+        // === RETURN BOOK ===
         if ($action === 'return' && $borrowing->status === 'borrowed') {
             $fine = 0;
             $now = now();
@@ -53,8 +55,40 @@ class BorrowingController extends Controller
                 'fine_amount' => $fine,
             ]);
 
+            // Ambil buku terkait
+            $book = $borrowing->book;
+
             // Tambahkan stok kembali
-            $borrowing->book->increment('available_copies', 1);
+            $book->increment('available_copies', 1);
+
+            // === CEK RESERVASI MENUNGGU ===
+            $nextReservation = \App\Models\Reservation::where('book_id', $book->id)
+                ->where('status', 'waiting')
+                ->orderBy('created_at')
+                ->first();
+
+            if ($nextReservation) {
+                // Hitung batas waktu pinjam
+                $borrowDays = (int) \App\Models\Setting::get('max_borrow_days', 7);
+
+                // Buat record peminjaman baru
+                \App\Models\Borrowing::create([
+                    'user_id' => $nextReservation->user_id,
+                    'book_id' => $book->id,
+                    'status' => 'requested',
+                    'borrow_date' => now(),
+                    'due_date' => now()->addDays($borrowDays),
+                ]);
+
+                // Update status reservasi
+                $nextReservation->update([
+                    'status' => 'notified',
+                    'notified_at' => now(),
+                ]);
+
+                // Kurangi stok lagi karena langsung dipinjam
+                $book->decrement('available_copies', 1);
+            }
 
             return back()->with('success', 'Buku dikembalikan. Denda: Rp ' . number_format($fine, 0, ',', '.'));
         }

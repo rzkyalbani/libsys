@@ -14,15 +14,6 @@ export default function Dashboard({ auth }) {
                         Selamat datang di LibSys Member Dashboard
                     </p>
                 </div>
-
-                <Link
-                    href={route("logout")}
-                    method="post"
-                    as="button"
-                    className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-all"
-                >
-                    Logout
-                </Link>
             </div>
 
             {/* Quick Navigation */}

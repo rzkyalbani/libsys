@@ -37,11 +37,13 @@ export default function MemberLayout({ children }) {
                         <span className="text-sm text-gray-600">
                             {auth.user.name}
                         </span>
-                        <form method="post" action={route("logout")}>
-                            <button className="text-red-600 hover:underline text-sm">
-                                Logout
-                            </button>
-                        </form>
+                        <Link
+                            href={route("logout")}
+                            method="post"
+                            className="w-full text-left px-3 py-2 rounded-md text-sm text-red-600 hover:bg-red-50"
+                        >
+                            Logout
+                        </Link>
                     </div>
                 </div>
             </header>

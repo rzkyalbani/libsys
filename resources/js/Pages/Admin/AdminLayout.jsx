@@ -1,4 +1,4 @@
-import { usePage } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import NavLink from "@/Components/NavLink";
 
 export default function AdminLayout({ children }) {
@@ -16,7 +16,6 @@ export default function AdminLayout({ children }) {
                         Hi, {auth.user.name}
                     </p>
                 </div>
-
                 <nav className="space-y-1">
                     <NavLink
                         href={route("admin.dashboard")}
@@ -56,11 +55,13 @@ export default function AdminLayout({ children }) {
                     </NavLink>
                 </nav>
 
-                <form method="post" action={route("logout")} className="mt-6">
-                    <button className="w-full text-left px-3 py-2 rounded-md text-sm text-red-600 hover:bg-red-50">
-                        Logout
-                    </button>
-                </form>
+                <Link
+                    href={route("logout")}
+                    method="post"
+                    className="w-full text-left px-3 py-2 rounded-md text-sm text-red-600 hover:bg-red-50"
+                >
+                    Logout
+                </Link>
             </aside>
 
             {/* Main */}

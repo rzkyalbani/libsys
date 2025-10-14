@@ -12,6 +12,12 @@ export default function Index({ books, categories, filters }) {
                 </h1>
             </div>
 
+            {flash.success && (
+                <div className="bg-green-100 text-green-700 p-3 rounded-md shadow-sm">
+                    {flash.success}
+                </div>
+            )}
+
             {flash.error && (
                 <div className="bg-red-100 text-red-700 p-3 rounded-md shadow-sm">
                     {flash.error}
@@ -71,7 +77,7 @@ export default function Index({ books, categories, filters }) {
                                     ? `${book.available_copies} eksemplar tersedia`
                                     : "Sedang tidak tersedia"}
                             </p>
-                            <Link
+                            {/* <Link
                                 as="button"
                                 method="post"
                                 href={route("member.borrow.store")}
@@ -84,6 +90,29 @@ export default function Index({ books, categories, filters }) {
                                 } text-white px-4 py-2 rounded-md transition-all`}
                             >
                                 Pinjam
+                            </Link> */}
+                            <Link
+                                href={
+                                    book.available_copies > 0
+                                        ? route("member.borrow.store")
+                                        : route("member.books.reserve", book.id)
+                                }
+                                data={{ book_id: book.id }}
+                                method="post"
+                                as="button"
+                                disabled={
+                                    book.available_copies <= 0 &&
+                                    book.is_reserved
+                                }
+                                className={`${
+                                    book.available_copies > 0
+                                        ? "bg-green-600 hover:bg-green-700"
+                                        : "bg-yellow-600 hover:bg-yellow-700"
+                                } text-white px-4 py-2 rounded transition-all`}
+                            >
+                                {book.available_copies > 0
+                                    ? "Pinjam"
+                                    : "Reservasi"}
                             </Link>
                         </div>
                     ))

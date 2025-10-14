@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-        return redirect()->route('/dashboard');
+        return redirect()->route('dashboard');
 });
 
 Route::get('/dashboard', function () {
@@ -20,7 +20,6 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    // Route::get('/dashboard', fn() => Inertia::render('Admin/Dashboard'))->name('dashboard');
     Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])
     ->name('dashboard');
     Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
@@ -38,6 +37,7 @@ Route::middleware(['auth', 'role:member'])->prefix('member')->name('member.')->g
     Route::get('/profile', [\App\Http\Controllers\Member\ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [\App\Http\Controllers\Member\ProfileController::class, 'update'])->name('profile.update');
     Route::get('/books', [\App\Http\Controllers\Member\BookController::class, 'index'])->name('books.index');
+    Route::post('/books/{book}/reserve', [\App\Http\Controllers\Member\BookController::class, 'reserve'])->name('books.reserve');
     Route::post('/borrow', [\App\Http\Controllers\Member\BorrowingController::class, 'store'])->name('borrow.store');
 });
 
