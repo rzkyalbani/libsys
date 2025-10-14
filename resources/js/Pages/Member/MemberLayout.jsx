@@ -46,24 +46,6 @@ export default function MemberLayout({ children }) {
                 </div>
             </header>
 
-            {/* Flash */}
-            <div className="max-w-6xl mx-auto px-4 mt-4">
-                {(flash?.success || flash?.error) && (
-                    <div className="mb-4">
-                        {flash.success && (
-                            <div className="bg-green-100 text-green-700 p-2 rounded">
-                                {flash.success}
-                            </div>
-                        )}
-                        {flash.error && (
-                            <div className="bg-red-100 text-red-700 p-2 rounded">
-                                {flash.error}
-                            </div>
-                        )}
-                    </div>
-                )}
-            </div>
-
             {/* Content */}
             <main className="max-w-6xl mx-auto px-4 py-6">{children}</main>
         </div>

@@ -64,23 +64,7 @@ export default function AdminLayout({ children }) {
             </aside>
 
             {/* Main */}
-            <main className="flex-1 p-6">
-                {(flash?.success || flash?.error) && (
-                    <div className="mb-4">
-                        {flash.success && (
-                            <div className="bg-green-100 text-green-700 p-2 rounded">
-                                {flash.success}
-                            </div>
-                        )}
-                        {flash.error && (
-                            <div className="bg-red-100 text-red-700 p-2 rounded">
-                                {flash.error}
-                            </div>
-                        )}
-                    </div>
-                )}
-                {children}
-            </main>
+            <main className="flex-1 p-6">{children}</main>
         </div>
     );
 }
