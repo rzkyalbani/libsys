@@ -2,16 +2,19 @@ import { usePage, Link } from "@inertiajs/react";
 import NavLink from "@/Components/NavLink";
 
 export default function MemberLayout({ children }) {
-    const { auth, flash } = usePage().props;
+    const { auth } = usePage().props;
     const current = (name) => route().current(name);
 
     return (
         <div className="min-h-screen bg-gray-50 text-gray-800">
             {/* Header */}
-            <header className="bg-white border-b">
-                <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-                    <div className="flex items-center gap-6">
-                        <h1 className="text-lg font-bold">📖 LibSys</h1>
+            <header className="bg-white border-b border-gray-200 shadow-sm">
+                <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+                    {/* Left */}
+                    <div className="flex items-center gap-8">
+                        <h1 className="text-xl font-semibold text-gray-900 tracking-tight">
+                            📖 LibSys
+                        </h1>
                         <nav className="hidden sm:flex gap-2">
                             <NavLink
                                 href={route("member.dashboard")}
@@ -51,14 +54,17 @@ export default function MemberLayout({ children }) {
                             </NavLink>
                         </nav>
                     </div>
+
+                    {/* Right */}
                     <div className="flex items-center gap-3">
-                        <span className="text-sm text-gray-600">
+                        <span className="text-sm text-gray-600 font-medium">
                             {auth.user.name}
                         </span>
                         <Link
                             href={route("logout")}
                             method="post"
-                            className="w-full text-left px-3 py-2 rounded-md text-sm text-red-600 hover:bg-red-50"
+                            as="button"
+                            className="px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md transition-all active:scale-[0.98]"
                         >
                             Logout
                         </Link>
@@ -67,7 +73,9 @@ export default function MemberLayout({ children }) {
             </header>
 
             {/* Content */}
-            <main className="max-w-6xl mx-auto px-4 py-6">{children}</main>
+            <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+                {children}
+            </main>
         </div>
     );
 }

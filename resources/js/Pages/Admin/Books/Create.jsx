@@ -26,72 +26,77 @@ export default function Create({ categories }) {
     };
 
     return (
-        <div className="p-6 space-y-6">
-            <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold text-gray-800">
-                    📚 Tambah Buku
-                </h1>
+        <div className="max-w-3xl mx-auto px-6 py-8 space-y-8">
+            <div className="flex justify-between items-center">
+                <div>
+                    <h1 className="text-2xl font-semibold text-gray-900 tracking-tight">
+                        Tambah Buku
+                    </h1>
+                    <p className="text-sm text-gray-500">
+                        Isi detail buku baru di bawah ini
+                    </p>
+                </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow border border-gray-100 p-6">
-                <form onSubmit={submit} className="space-y-4">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <form onSubmit={submit} className="space-y-5">
+                    {/* Input Group */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Judul
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                            Judul Buku
                         </label>
                         <input
                             type="text"
                             value={data.title}
                             onChange={(e) => setData("title", e.target.value)}
-                            className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 transition-all"
                         />
                         {errors.title && (
-                            <p className="text-red-500 text-sm mt-1">
+                            <p className="text-rose-600 text-sm mt-1">
                                 {errors.title}
-                            </p>
-                        )}
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Penulis
-                        </label>
-                        <input
-                            type="text"
-                            value={data.author}
-                            onChange={(e) => setData("author", e.target.value)}
-                            className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Kategori
-                        </label>
-                        <select
-                            value={data.category_id}
-                            onChange={(e) =>
-                                setData("category_id", e.target.value)
-                            }
-                            className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
-                        >
-                            <option value="">-- Pilih Kategori --</option>
-                            {categories.map((cat) => (
-                                <option key={cat.id} value={cat.id}>
-                                    {cat.name}
-                                </option>
-                            ))}
-                        </select>
-                        {errors.category_id && (
-                            <p className="text-red-500 text-sm mt-1">
-                                {errors.category_id}
                             </p>
                         )}
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">
+                            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                                Penulis
+                            </label>
+                            <input
+                                type="text"
+                                value={data.author}
+                                onChange={(e) =>
+                                    setData("author", e.target.value)
+                                }
+                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                                Kategori
+                            </label>
+                            <select
+                                value={data.category_id}
+                                onChange={(e) =>
+                                    setData("category_id", e.target.value)
+                                }
+                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                            >
+                                <option value="">Pilih kategori...</option>
+                                {categories.map((cat) => (
+                                    <option key={cat.id} value={cat.id}>
+                                        {cat.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1.5">
                                 Total Eksemplar
                             </label>
                             <input
@@ -100,17 +105,12 @@ export default function Create({ categories }) {
                                 onChange={(e) =>
                                     setData("total_copies", e.target.value)
                                 }
-                                className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                             />
-                            {errors.total_copies && (
-                                <p className="text-red-500 text-sm mt-1">
-                                    {errors.total_copies}
-                                </p>
-                            )}
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">
+                            <label className="block text-sm font-medium text-gray-700 mb-1.5">
                                 Tersedia
                             </label>
                             <input
@@ -119,18 +119,13 @@ export default function Create({ categories }) {
                                 onChange={(e) =>
                                     setData("available_copies", e.target.value)
                                 }
-                                className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                             />
-                            {errors.available_copies && (
-                                <p className="text-red-500 text-sm mt-1">
-                                    {errors.available_copies}
-                                </p>
-                            )}
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
                             Deskripsi
                         </label>
                         <textarea
@@ -138,34 +133,34 @@ export default function Create({ categories }) {
                             onChange={(e) =>
                                 setData("description", e.target.value)
                             }
-                            className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                         />
                     </div>
 
                     <div>
-                        <label>File E-book (PDF)</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                            File E-book (PDF)
+                        </label>
                         <input
                             type="file"
                             accept="application/pdf"
                             onChange={(e) => setData("file", e.target.files[0])}
-                            className="border rounded w-full p-2"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm file:mr-4 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:bg-gray-100 hover:file:bg-gray-200 transition-all"
                         />
-                        {errors.file && (
-                            <p className="text-red-500">{errors.file}</p>
-                        )}
                     </div>
 
-                    <div className="flex items-center space-x-2">
+                    {/* Buttons */}
+                    <div className="flex gap-3 pt-2">
                         <button
                             type="submit"
                             disabled={processing}
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition"
+                            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-sm hover:shadow-md active:scale-[0.98] transition-all"
                         >
                             Simpan
                         </button>
                         <a
                             href={route("admin.books.index")}
-                            className="text-sm text-gray-500 hover:underline"
+                            className="px-6 py-2.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
                         >
                             Batal
                         </a>
