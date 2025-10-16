@@ -41,12 +41,6 @@ export default function MemberLayout({ children }) {
                                 Reservasi
                             </NavLink>
                             <NavLink
-                                href={route("member.fines.index")}
-                                active={current("member.fines.index")}
-                            >
-                                Denda
-                            </NavLink>
-                            <NavLink
                                 href={route("member.profile.edit")}
                                 active={current("member.profile.edit")}
                             >

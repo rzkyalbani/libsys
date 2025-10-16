@@ -23,11 +23,6 @@ export default function Dashboard({ auth }) {
             desc: "Cek daftar buku yang kamu pesan dan tunggu ketersediaannya.",
             href: route("member.reservations.index"),
         },
-        {
-            title: "Denda Saya",
-            desc: "Lihat dan tandai pembayaran denda buku yang terlambat dikembalikan.",
-            href: route("member.fines.index"),
-        },
     ];
 
     return (

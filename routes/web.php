@@ -46,8 +46,6 @@ Route::middleware(['auth', 'role:member'])->prefix('member')->name('member.')->g
     Route::delete('/borrowings/{borrowing}/cancel', [\App\Http\Controllers\Member\BorrowingController::class, 'cancel'])->name('borrowings.cancel');
     Route::get('/reservations', [\App\Http\Controllers\Member\ReservationController::class, 'index'])->name('reservations.index');
     Route::delete('/reservations/{reservation}', [\App\Http\Controllers\Member\ReservationController::class, 'destroy'])->name('reservations.destroy');
-    Route::get('/fines', [\App\Http\Controllers\Member\FineController::class, 'index'])->name('fines.index');
-    Route::post('/fines/{borrowing}/mark-paid', [\App\Http\Controllers\Member\FineController::class, 'markAsPaid'])->name('fines.markPaid');
 });
 
 
