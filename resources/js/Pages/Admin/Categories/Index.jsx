@@ -31,6 +31,12 @@ export default function Index({ categories }) {
                 </div>
             )}
 
+            {flash.error && (
+                <div className="bg-red-100 text-red-700 p-3 rounded-md shadow-sm">
+                    {flash.error}
+                </div>
+            )}
+
             {/* Table */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <table className="min-w-full text-sm text-gray-700">

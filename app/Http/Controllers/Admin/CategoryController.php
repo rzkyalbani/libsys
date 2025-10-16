@@ -57,7 +57,11 @@ class CategoryController extends Controller
     }
 
     public function destroy(Category $category)
-    {
+    {   
+        if ($category->books()->exists()) {
+            return back()->with('error', 'Kategori tidak dapat dihapus karena masih digunakan oleh buku.');
+        }
+
         $category->delete();
 
         return redirect()->back()->with('success', 'Kategori dihapus.');
