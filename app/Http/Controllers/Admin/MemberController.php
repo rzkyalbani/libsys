@@ -81,7 +81,7 @@ class MemberController extends Controller
     public function destroy(User $member)
     {
         if ($member->role !== 'member') {
-            return back()->withErrors(['error' => 'Hanya member yang bisa dihapus.']);
+            return back()->with('error', 'Hanya member yang bisa dihapus.');
         }
 
         $member->delete();

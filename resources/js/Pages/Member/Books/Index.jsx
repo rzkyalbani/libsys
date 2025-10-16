@@ -1,8 +1,33 @@
-import { Link, usePage } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import MemberLayout from "../MemberLayout";
+import { useEffect, useState } from "react";
 
 export default function Index({ books, categories, filters }) {
     const { flash } = usePage().props;
+
+    // Local state buat search dan kategori
+    const [search, setSearch] = useState(filters.search || "");
+    const [category, setCategory] = useState(filters.category || "");
+
+    // Function buat trigger query otomatis
+    const handleFilterChange = (newSearch, newCategory) => {
+        router.get(
+            route("member.books.index"),
+            { search: newSearch, category: newCategory },
+            {
+                preserveState: true,
+                replace: true,
+            }
+        );
+    };
+
+    useEffect(() => {
+        const delayDebounce = setTimeout(() => {
+            handleFilterChange(search, category);
+        }, 400);
+
+        return () => clearTimeout(delayDebounce);
+    }, [search, category]);
 
     return (
         <div className="space-y-10">
@@ -33,13 +58,15 @@ export default function Index({ books, categories, filters }) {
                 <input
                     type="text"
                     name="search"
-                    defaultValue={filters.search}
-                    placeholder="Cari judul buku..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Cari judul atau penulis..."
                     className="flex-1 px-4 py-2.5 border border-neutral-300 rounded-lg text-sm text-neutral-800 placeholder-neutral-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                 />
                 <select
                     name="category"
-                    defaultValue={filters.category || ""}
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
                     className="sm:w-56 px-4 py-2.5 border border-neutral-300 rounded-lg text-sm text-neutral-800 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                 >
                     <option value="">Semua Kategori</option>
@@ -49,12 +76,6 @@ export default function Index({ books, categories, filters }) {
                         </option>
                     ))}
                 </select>
-                <button
-                    type="submit"
-                    className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition active:scale-[0.97]"
-                >
-                    Cari
-                </button>
             </div>
 
             {/* Book Grid */}
@@ -195,17 +216,10 @@ export default function Index({ books, categories, filters }) {
                 </div>
             )}
 
-            {/* Animation */}
             <style>{`
                 @keyframes fadeIn {
-                    from {
-                        opacity: 0;
-                        transform: translateY(6px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
+                    from { opacity: 0; transform: translateY(6px); }
+                    to { opacity: 1; transform: translateY(0); }
                 }
             `}</style>
         </div>
