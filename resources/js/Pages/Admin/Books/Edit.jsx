@@ -1,8 +1,9 @@
 import { useForm } from "@inertiajs/react";
 import AdminLayout from "../AdminLayout";
+import { useState } from "react";
 
 export default function Edit({ categories, book }) {
-    const { data, setData, put, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm({
         title: book.title,
         author: book.author,
         isbn: book.isbn,
@@ -10,7 +11,12 @@ export default function Edit({ categories, book }) {
         total_copies: book.total_copies,
         available_copies: book.available_copies,
         description: book.description,
+        _method: "PUT",
     });
+
+    const [previewFile, setPreviewFile] = useState(
+        book.file_path ? `/storage/${book.file_path}` : null
+    );
 
     const submit = (e) => {
         e.preventDefault();
@@ -22,7 +28,20 @@ export default function Edit({ categories, book }) {
             return;
         }
 
-        put(route("admin.books.update", book));
+        post(route("admin.books.update", book), {
+            forceFormData: true,
+        });
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        setData("file", file);
+
+        // tampilkan preview PDF baru
+        if (file) {
+            const url = URL.createObjectURL(file);
+            setPreviewFile(url);
+        }
     };
 
     return (
@@ -33,14 +52,18 @@ export default function Edit({ categories, book }) {
                         Edit Buku
                     </h1>
                     <p className="text-sm text-gray-500">
-                        Isi detail buku baru di bawah ini
+                        Ubah informasi dan file e-book jika diperlukan
                     </p>
                 </div>
             </div>
 
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <form onSubmit={submit} className="space-y-5">
-                    {/* Input Group */}
+                <form
+                    onSubmit={submit}
+                    className="space-y-5"
+                    encType="multipart/form-data"
+                >
+                    {/* Judul */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1.5">
                             Judul Buku
@@ -49,7 +72,7 @@ export default function Edit({ categories, book }) {
                             type="text"
                             value={data.title}
                             onChange={(e) => setData("title", e.target.value)}
-                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 transition-all"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 transition-all"
                         />
                         {errors.title && (
                             <p className="text-rose-600 text-sm mt-1">
@@ -58,6 +81,7 @@ export default function Edit({ categories, book }) {
                         )}
                     </div>
 
+                    {/* Penulis & Kategori */}
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1.5">
@@ -69,10 +93,9 @@ export default function Edit({ categories, book }) {
                                 onChange={(e) =>
                                     setData("author", e.target.value)
                                 }
-                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
-
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1.5">
                                 Kategori
@@ -82,7 +105,7 @@ export default function Edit({ categories, book }) {
                                 onChange={(e) =>
                                     setData("category_id", e.target.value)
                                 }
-                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                             >
                                 <option value="">Pilih kategori...</option>
                                 {categories.map((cat) => (
@@ -94,6 +117,7 @@ export default function Edit({ categories, book }) {
                         </div>
                     </div>
 
+                    {/* Total & Tersedia */}
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1.5">
@@ -108,7 +132,6 @@ export default function Edit({ categories, book }) {
                                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
-
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1.5">
                                 Tersedia
@@ -124,6 +147,7 @@ export default function Edit({ categories, book }) {
                         </div>
                     </div>
 
+                    {/* Deskripsi */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1.5">
                             Deskripsi
@@ -133,10 +157,11 @@ export default function Edit({ categories, book }) {
                             onChange={(e) =>
                                 setData("description", e.target.value)
                             }
-                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
 
+                    {/* File PDF */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1.5">
                             File E-book (PDF)
@@ -144,12 +169,37 @@ export default function Edit({ categories, book }) {
                         <input
                             type="file"
                             accept="application/pdf"
-                            onChange={(e) => setData("file", e.target.files[0])}
+                            onChange={handleFileChange}
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm file:mr-4 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:bg-gray-100 hover:file:bg-gray-200 transition-all"
                         />
+
+                        {/* Preview file */}
+                        {previewFile && (
+                            <div className="mt-4 border rounded-lg overflow-hidden bg-gray-50 p-3">
+                                <p className="text-sm font-medium text-gray-600 mb-2">
+                                    Pratinjau File:
+                                </p>
+                                <iframe
+                                    src={previewFile}
+                                    className="w-full h-64 rounded-lg border"
+                                ></iframe>
+                                {book.file_path && (
+                                    <p className="text-xs text-gray-500 mt-1">
+                                        File saat ini:{" "}
+                                        <a
+                                            href={`/storage/${book.file_path}`}
+                                            target="_blank"
+                                            className="text-blue-600 hover:underline"
+                                        >
+                                            {book.file_path.split("/").pop()}
+                                        </a>
+                                    </p>
+                                )}
+                            </div>
+                        )}
                     </div>
 
-                    {/* Buttons */}
+                    {/* Tombol */}
                     <div className="flex gap-3 pt-2">
                         <button
                             type="submit"
