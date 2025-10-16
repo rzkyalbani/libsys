@@ -71,14 +71,25 @@ export default function Index({ reservations }) {
                                             <span className="text-amber-600 font-medium bg-amber-50 px-2 py-1 rounded-full text-xs">
                                                 Menunggu
                                             </span>
-                                        ) : (
+                                        ) : r.status === "notified" ? (
                                             <span className="text-emerald-700 font-medium bg-emerald-50 px-2 py-1 rounded-full text-xs">
-                                                Tersedia
+                                                Siap Dipinjam
+                                            </span>
+                                        ) : r.status === "cancelled" ? (
+                                            <span className="text-rose-600 font-medium bg-rose-50 px-2 py-1 rounded-full text-xs">
+                                                Dibatalkan
+                                            </span>
+                                        ) : (
+                                            <span className="text-neutral-500 bg-neutral-100 px-2 py-1 rounded-full text-xs font-medium">
+                                                Diproses
                                             </span>
                                         )}
                                     </td>
+
                                     <td className="px-5 py-3">
-                                        {r.status === "waiting" && (
+                                        {["waiting", "notified"].includes(
+                                            r.status
+                                        ) ? (
                                             <Link
                                                 as="button"
                                                 method="delete"
@@ -86,11 +97,11 @@ export default function Index({ reservations }) {
                                                     "member.reservations.destroy",
                                                     r.id
                                                 )}
-                                                className="text-rose-600 hover:text-rose-800 font-medium text-sm transition-colors"
+                                                className="px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white text-xs font-medium rounded-lg transition active:scale-[0.97]"
                                                 onClick={(e) => {
                                                     if (
                                                         !confirm(
-                                                            `Batalkan reservasi "${r.book.title}"?`
+                                                            `Batalkan reservasi untuk "${r.book.title}"?`
                                                         )
                                                     )
                                                         e.preventDefault();
@@ -98,6 +109,10 @@ export default function Index({ reservations }) {
                                             >
                                                 Batalkan
                                             </Link>
+                                        ) : (
+                                            <span className="text-neutral-400 text-xs italic">
+                                                Tidak dapat dibatalkan
+                                            </span>
                                         )}
                                     </td>
                                 </tr>
@@ -111,4 +126,3 @@ export default function Index({ reservations }) {
 }
 
 Index.layout = (page) => <MemberLayout>{page}</MemberLayout>;
-    

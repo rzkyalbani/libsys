@@ -13,7 +13,7 @@ class ReservationController extends Controller
     {
         $reservations = Reservation::with('book:id,title')
             ->where('user_id', auth()->id())
-            ->whereIn('status', ['waiting', 'notified'])
+            ->whereIn('status', ['waiting', 'notified', 'cancelled'])
             ->latest()
             ->get();
 
@@ -32,7 +32,7 @@ class ReservationController extends Controller
 
         // Kalau masih waiting (belum dibuatkan borrowing sama sistem)
         if ($reservation->status === 'waiting') {
-            $reservation->delete();
+            $reservation->update(['status' => 'cancelled']);
             return back()->with('success', 'Reservasi berhasil dibatalkan.');
         }
 
