@@ -1,3 +1,8 @@
+![Laravel](https://img.shields.io/badge/Laravel-12.x-red?logo=laravel)
+![React](https://img.shields.io/badge/React-18-blue?logo=react)
+![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
+![Status](https://img.shields.io/badge/Status-Active-success)
+
 # LibSys - Library Management System
 
 LibSys adalah aplikasi manajemen perpustakaan modern yang dirancang untuk mempermudah pengelolaan buku, peminjaman, reservasi, dan denda. Dengan antarmuka yang minimalis dan responsif, LibSys memberikan pengalaman pengguna yang nyaman dan efisien.
