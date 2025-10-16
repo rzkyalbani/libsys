@@ -69,6 +69,9 @@ export default function Index({ borrowings }) {
                             <th className="px-5 py-3 text-left font-semibold">
                                 Denda
                             </th>
+                            <th className="px-5 py-3 text-left font-semibold">
+                                Aksi
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -129,6 +132,33 @@ export default function Index({ borrowings }) {
                                         ) : (
                                             <span className="text-neutral-400 text-sm">
                                                 Tidak ada denda
+                                            </span>
+                                        )}
+                                    </td>
+                                    <td className="px-5 py-3">
+                                        {item.status === "requested" ? (
+                                            <Link
+                                                as="button"
+                                                method="delete"
+                                                href={route(
+                                                    "member.borrowings.cancel",
+                                                    item.id
+                                                )}
+                                                onClick={(e) => {
+                                                    if (
+                                                        !confirm(
+                                                            `Batalkan permintaan peminjaman untuk "${item.book.title}"?`
+                                                        )
+                                                    )
+                                                        e.preventDefault();
+                                                }}
+                                                className="px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white text-xs font-medium rounded-lg transition active:scale-[0.97]"
+                                            >
+                                                Batalkan
+                                            </Link>
+                                        ) : (
+                                            <span className="text-neutral-400 text-xs italic">
+                                                Tidak dapat dibatalkan
                                             </span>
                                         )}
                                     </td>

@@ -43,6 +43,7 @@ Route::middleware(['auth', 'role:member'])->prefix('member')->name('member.')->g
     Route::post('/books/{book}/reserve', [\App\Http\Controllers\Member\BookController::class, 'reserve'])->name('books.reserve');
     Route::get('/borrowings', [\App\Http\Controllers\Member\BorrowingController::class, 'index'])->name('borrowings.index');
     Route::post('/borrow', [\App\Http\Controllers\Member\BorrowingController::class, 'store'])->name('borrow.store');
+    Route::delete('/borrowings/{borrowing}/cancel', [\App\Http\Controllers\Member\BorrowingController::class, 'cancel'])->name('borrowings.cancel');
     Route::get('/reservations', [\App\Http\Controllers\Member\ReservationController::class, 'index'])->name('reservations.index');
     Route::delete('/reservations/{reservation}', [\App\Http\Controllers\Member\ReservationController::class, 'destroy'])->name('reservations.destroy');
     Route::get('/fines', [\App\Http\Controllers\Member\FineController::class, 'index'])->name('fines.index');

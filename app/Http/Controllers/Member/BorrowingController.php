@@ -67,4 +67,27 @@ class BorrowingController extends Controller
 
         return back()->with('success', 'Permintaan peminjaman dikirim. Tunggu konfirmasi dari admin.');
     }
+
+    public function cancel(Borrowing $borrowing)
+    {
+        $userId = auth()->id();
+
+        // Pastikan user tidak bisa membatalkan peminjaman orang lain
+        if ($borrowing->user_id !== $userId) {
+            abort(403, 'Tidak boleh membatalkan peminjaman orang lain.');
+        }
+
+        // Hanya boleh dibatalkan jika status masih "requested"
+        if ($borrowing->status !== 'requested') {
+            return back()->with('error', 'Peminjaman ini sudah diproses dan tidak dapat dibatalkan.');
+        }
+
+        // Ubah status menjadi cancelled
+        $borrowing->update(['status' => 'cancelled']);
+
+        // Kembalikan stok buku
+        $borrowing->book->increment('available_copies', 1);
+
+        return back()->with('success', 'Permintaan peminjaman berhasil dibatalkan.');
+    }
 }
