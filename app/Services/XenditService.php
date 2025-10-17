@@ -48,41 +48,41 @@ class XenditService
     /**
      * (Opsional) Virtual Account manual, masih bisa dipakai juga
      */
-    public function createVirtualAccount($amount, $user, $borrowing)
-    {
-        $externalId = 'fine_' . $borrowing->id . '_' . Str::random(6);
+    // public function createVirtualAccount($amount, $user, $borrowing)
+    // {
+    //     $externalId = 'fine_' . $borrowing->id . '_' . Str::random(6);
 
-        $payment = Payment::create([
-            'user_id' => $user->id,
-            'borrowing_id' => $borrowing->id,
-            'external_id' => $externalId,
-            'amount' => $amount,
-            'status' => 'pending',
-        ]);
+    //     $payment = Payment::create([
+    //         'user_id' => $user->id,
+    //         'borrowing_id' => $borrowing->id,
+    //         'external_id' => $externalId,
+    //         'amount' => $amount,
+    //         'status' => 'pending',
+    //     ]);
 
-        $response = Http::withBasicAuth($this->secretKey, '')
-            ->post("{$this->baseUrl}/callback_virtual_accounts", [
-                'external_id' => $externalId,
-                'bank_code' => 'BCA',
-                'name' => $user->name,
-                'expected_amount' => $amount,
-                'is_closed' => true,
-            ]);
+    //     $response = Http::withBasicAuth($this->secretKey, '')
+    //         ->post("{$this->baseUrl}/callback_virtual_accounts", [
+    //             'external_id' => $externalId,
+    //             'bank_code' => 'BCA',
+    //             'name' => $user->name,
+    //             'expected_amount' => $amount,
+    //             'is_closed' => true,
+    //         ]);
 
-        if ($response->failed()) {
-            $payment->update(['status' => 'failed']);
-            throw new \Exception('Gagal membuat VA: ' . $response->body());
-        }
+    //     if ($response->failed()) {
+    //         $payment->update(['status' => 'failed']);
+    //         throw new \Exception('Gagal membuat VA: ' . $response->body());
+    //     }
 
-        $data = $response->json();
+    //     $data = $response->json();
 
-        $payment->update([
-            'reference_id' => $data['id'] ?? null,
-            'metadata' => $data,
-        ]);
+    //     $payment->update([
+    //         'reference_id' => $data['id'] ?? null,
+    //         'metadata' => $data,
+    //     ]);
 
-        return $data;
-    }
+    //     return $data;
+    // }
 
     /**
      * Handle callback untuk VA & Invoice
@@ -90,41 +90,41 @@ class XenditService
     public function handleCallback($payload, $token)
     {
         if ($token !== config('services.xendit.callback_token')) {
-            Log::warning('Invalid Xendit callback token', ['token' => $token]);
+            \Log::warning('Invalid callback token', ['received' => $token]);
             abort(403, 'Invalid callback token');
         }
 
-        Log::info('Xendit callback diterima', $payload);
+        \Log::info('Callback diterima dari Xendit', $payload);
 
         $externalId = $payload['external_id'] ?? null;
-        $status = strtoupper($payload['status'] ?? 'PENDING');
-
         if (!$externalId) {
             abort(400, 'Missing external_id');
         }
 
-        $payment = Payment::where('external_id', $externalId)->first();
+        $payment = \App\Models\Payment::where('external_id', $externalId)->first();
         if (!$payment) {
-            Log::warning('Payment tidak ditemukan', ['external_id' => $externalId]);
+            \Log::warning('Payment tidak ditemukan', ['external_id' => $externalId]);
             abort(404, 'Payment not found');
         }
 
-        // Handle untuk status PAID
+        $status = strtoupper($payload['status'] ?? 'PENDING');
+
         if (in_array($status, ['PAID', 'SETTLED'])) {
             $payment->update([
                 'status' => 'paid',
-                'metadata' => json_encode($payload),
+                'metadata' => $payload,
             ]);
 
-            // Update borrowing agar denda jadi 0
-            $borrowing = $payment->borrowing ?? Borrowing::find($payment->borrowing_id ?? $payment->fine_id);
-            if ($borrowing && $borrowing->fine_amount > 0) {
-                $borrowing->update(['fine_amount' => 0]);
+            // Update borrowing
+            $borrowing = $payment->borrowing;
+            if ($borrowing) {
+                $borrowing->update(['is_fine_paid' => 1]);
             }
 
-            Log::info('Pembayaran berhasil', ['external_id' => $externalId]);
+            \Log::info('Pembayaran berhasil diperbarui', ['external_id' => $externalId]);
         } elseif (in_array($status, ['EXPIRED', 'FAILED'])) {
             $payment->update(['status' => 'failed']);
+            \Log::info('Pembayaran gagal/expired', ['external_id' => $externalId]);
         }
 
         return response()->json(['message' => 'Callback processed']);

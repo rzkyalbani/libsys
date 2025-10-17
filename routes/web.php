@@ -50,6 +50,11 @@ Route::middleware(['auth', 'role:member'])->prefix('member')->name('member.')->g
 });
 
 // Xendit
-Route::post('/xendit/callback', [\App\Http\Controllers\PaymentCallbackController::class, 'handle']);
+Route::get('/payment/success', function () {
+    return Inertia::render('Payment/Success');
+})->name('payment.success');
+Route::get('/payment/failed', function () {
+    return Inertia::render('Payment/Failed');
+})->name('payment.failed');
 
 require __DIR__.'/auth.php';
