@@ -34,8 +34,9 @@ class PaymentController extends Controller
             'metadata' => json_encode($invoice),
         ]);
 
-        // Redirect user ke halaman payment
-        return redirect($invoice['invoice_url']);
+        return response()->json([
+            'redirect_url' => $invoice['invoice_url']
+        ]);
     }
 
     // public function payFine($borrowingId, XenditService $xendit)

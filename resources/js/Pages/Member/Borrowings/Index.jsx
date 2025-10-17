@@ -1,5 +1,6 @@
 import { Link, usePage } from "@inertiajs/react";
 import MemberLayout from "../MemberLayout";
+import axios from "axios";
 
 export default function Index({ borrowings }) {
     const { flash } = usePage().props;
@@ -20,6 +21,26 @@ export default function Index({ borrowings }) {
                 {status.charAt(0).toUpperCase() + status.slice(1)}
             </span>
         );
+    };
+
+    const handlePayment = async (borrowingId) => {
+        try {
+            const response = await axios.post(
+                route("member.payments.pay", borrowingId)
+            );
+
+            if (response.data && response.data.redirect_url) {
+                window.location.href = response.data.redirect_url;
+            } else {
+                alert("URL pembayaran tidak ditemukan di respons server.");
+            }
+        } catch (error) {
+            console.error(
+                "Gagal membuat invoice Xendit:",
+                error.response || error
+            );
+            alert("Gagal memproses pembayaran. Silakan coba lagi.");
+        }
     };
 
     return (
@@ -167,17 +188,16 @@ export default function Index({ borrowings }) {
                                                 {!item.is_fine_paid &&
                                                     item.status ===
                                                         "returned" && (
-                                                        <Link
-                                                            method="post"
-                                                            href={route(
-                                                                "member.payments.pay",
-                                                                item.id
-                                                            )}
-                                                            as="button"
+                                                        <button
+                                                            onClick={() =>
+                                                                handlePayment(
+                                                                    item.id
+                                                                )
+                                                            }
                                                             className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded-md mt-1 transition active:scale-[0.98]"
                                                         >
                                                             Bayar Denda
-                                                        </Link>
+                                                        </button>
                                                     )}
                                             </div>
                                         ) : (

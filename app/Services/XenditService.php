@@ -24,7 +24,7 @@ class XenditService
      */
     public function createInvoice($amount, $user, $borrowing)
     {
-        $externalId = 'fine-' . $borrowing->id;
+        $externalId = 'fine_' . $borrowing->id . '_' . Str::random(6);
 
         $response = Http::withBasicAuth($this->secretKey, '')
             ->post($this->baseUrl . '/v2/invoices', [
