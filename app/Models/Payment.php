@@ -11,7 +11,7 @@ class Payment extends Model
 
     protected $fillable = [
         'user_id',
-        'fine_id',
+        'borrowing_id',
         'external_id',
         'gateway',
         'reference_id',

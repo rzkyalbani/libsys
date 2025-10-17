@@ -46,12 +46,7 @@ Route::middleware(['auth', 'role:member'])->prefix('member')->name('member.')->g
     Route::delete('/borrowings/{borrowing}/cancel', [\App\Http\Controllers\Member\BorrowingController::class, 'cancel'])->name('borrowings.cancel');
     Route::get('/reservations', [\App\Http\Controllers\Member\ReservationController::class, 'index'])->name('reservations.index');
     Route::delete('/reservations/{reservation}', [\App\Http\Controllers\Member\ReservationController::class, 'destroy'])->name('reservations.destroy');
-});
-
-
-Route::middleware(['auth', 'role:member'])->group(function () {
-    Route::get('/member/dashboard', fn() => Inertia::render('Member/Dashboard'))
-        ->name('member.dashboard');
+    Route::post('/payments/{borrowing}/pay', [\App\Http\Controllers\Member\PaymentController::class, 'payFine'])->name('payments.pay');
 });
 
 // Xendit
