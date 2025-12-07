@@ -233,3 +233,51 @@ To clean up unused Docker resources:
 ```bash
 docker system prune
 ```
+
+## Payment Integration with Xendit
+
+The LibSys project includes payment integration with Xendit for handling library fine payments. Here's how to configure it:
+
+### Xendit Environment Variables
+
+Add the following variables to your `.env` file:
+
+```
+XENDIT_SECRET_KEY=your_xendit_secret_key_here
+XENDIT_CALLBACK_TOKEN=your_callback_verification_token_here
+XENDIT_API_BASE=https://api.xendit.co
+XENDIT_SUCCESS_URL=http://localhost:8000/member/borrowings
+XENDIT_FAILURE_URL=http://localhost:8000/member/borrowings
+```
+
+### Configuration
+
+The Xendit service is configured in `config/services.php` with the following options:
+- Secret key for API authentication
+- Callback token for webhook verification
+- API base URL (defaults to Xendit's production endpoint)
+
+### Payment Flow
+
+1. When a user needs to pay a fine, the application creates an invoice via Xendit's API
+2. Xendit returns a payment URL that the user is redirected to
+3. After payment completion, Xendit sends a callback to `/xendit/callback`
+4. The callback is processed by `PaymentCallbackController` which verifies the token and updates payment status
+5. The system updates the borrowing record to mark the fine as paid
+
+### Callback Endpoint
+
+The application listens for Xendit callbacks at:
+```
+POST /xendit/callback
+```
+
+This endpoint is secured with a callback token verification to ensure requests are genuinely from Xendit.
+
+### Frontend Integration
+
+The payment flow is triggered from the member's borrowing page when there are outstanding fines. The frontend sends an AJAX request to initiate the payment process and handles the redirect to Xendit's payment page.
+
+### Testing Payments
+
+For testing purposes, you can use Xendit's test environment with test cards. Make sure to use your test API keys when developing locally.
