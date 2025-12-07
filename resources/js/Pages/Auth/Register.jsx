@@ -1,4 +1,7 @@
 import { Head, Link, useForm } from "@inertiajs/react";
+import PrimaryButton from "@/Components/PrimaryButton";
+import InputLabel from "@/Components/InputLabel";
+import TextInput from "@/Components/TextInput";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -14,134 +17,132 @@ export default function Register() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col justify-center items-center bg-neutral-50 px-6">
+        <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50 px-4 sm:px-6 lg:px-8">
             <Head title="Daftar Akun LibSys" />
 
-            <div className="w-full max-w-md bg-white border border-neutral-200 rounded-2xl shadow-sm p-8 space-y-6">
-                <div className="text-center">
-                    <h1 className="text-2xl font-semibold text-neutral-900 tracking-tight">
-                        Buat Akun Baru
-                    </h1>
-                    <p className="text-neutral-500 text-sm mt-1">
-                        Bergabunglah dan nikmati akses penuh ke LibSys
-                    </p>
+            <div className="sm:mx-auto sm:w-full sm:max-w-md">
+                <div className="flex justify-center">
+                    <div className="p-3 bg-blue-100 text-blue-600 rounded-xl">
+                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
                 </div>
 
-                <form onSubmit={submit} className="space-y-5">
-                    <div>
-                        <label
-                            htmlFor="name"
-                            className="block text-sm font-medium text-neutral-700 mb-1"
-                        >
-                            Nama Lengkap
-                        </label>
-                        <input
-                            id="name"
-                            type="text"
-                            name="name"
-                            value={data.name}
-                            onChange={(e) => setData("name", e.target.value)}
-                            className="w-full rounded-lg border border-neutral-300 px-3.5 py-2.5 text-neutral-900 placeholder-neutral-400 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                            placeholder="Nama kamu"
-                        />
-                        {errors.name && (
-                            <p className="text-sm text-red-500 mt-1">
-                                {errors.name}
-                            </p>
-                        )}
-                    </div>
-
-                    <div>
-                        <label
-                            htmlFor="email"
-                            className="block text-sm font-medium text-neutral-700 mb-1"
-                        >
-                            Email
-                        </label>
-                        <input
-                            id="email"
-                            type="email"
-                            name="email"
-                            value={data.email}
-                            onChange={(e) => setData("email", e.target.value)}
-                            className="w-full rounded-lg border border-neutral-300 px-3.5 py-2.5 text-neutral-900 placeholder-neutral-400 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                            placeholder="contoh@email.com"
-                        />
-                        {errors.email && (
-                            <p className="text-sm text-red-500 mt-1">
-                                {errors.email}
-                            </p>
-                        )}
-                    </div>
-
-                    <div>
-                        <label
-                            htmlFor="password"
-                            className="block text-sm font-medium text-neutral-700 mb-1"
-                        >
-                            Password
-                        </label>
-                        <input
-                            id="password"
-                            type="password"
-                            name="password"
-                            value={data.password}
-                            onChange={(e) =>
-                                setData("password", e.target.value)
-                            }
-                            className="w-full rounded-lg border border-neutral-300 px-3.5 py-2.5 text-neutral-900 placeholder-neutral-400 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                            placeholder="Minimal 8 karakter"
-                        />
-                        {errors.password && (
-                            <p className="text-sm text-red-500 mt-1">
-                                {errors.password}
-                            </p>
-                        )}
-                    </div>
-
-                    <div>
-                        <label
-                            htmlFor="password_confirmation"
-                            className="block text-sm font-medium text-neutral-700 mb-1"
-                        >
-                            Konfirmasi Password
-                        </label>
-                        <input
-                            id="password_confirmation"
-                            type="password"
-                            name="password_confirmation"
-                            value={data.password_confirmation}
-                            onChange={(e) =>
-                                setData("password_confirmation", e.target.value)
-                            }
-                            className="w-full rounded-lg border border-neutral-300 px-3.5 py-2.5 text-neutral-900 placeholder-neutral-400 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                            placeholder="Ulangi password"
-                        />
-                    </div>
-
-                    <button
-                        type="submit"
-                        disabled={processing}
-                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg shadow-sm transition-all active:scale-[0.98]"
-                    >
-                        Daftar
-                    </button>
-                </form>
-
-                <p className="text-center text-sm text-neutral-500">
-                    Sudah punya akun?{" "}
-                    <Link
-                        href={route("login")}
-                        className="text-blue-600 hover:text-blue-700 font-medium"
-                    >
-                        Masuk
-                    </Link>
+                <h2 className="mt-6 text-center text-2xl font-bold tracking-tight text-gray-900">
+                    Buat Akun Baru
+                </h2>
+                <p className="mt-2 text-center text-sm text-gray-500">
+                    Bergabunglah dan nikmati akses penuh ke LibSys
                 </p>
             </div>
 
-            <p className="text-neutral-400 text-xs mt-6">
-                © {new Date().getFullYear()} LibSys — Sistem Manajemen
-                Perpustakaan
+            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+                <div className="bg-white py-8 px-6 shadow rounded-lg sm:px-10 card">
+                    <form onSubmit={submit} className="space-y-6">
+                        <div>
+                            <InputLabel htmlFor="name" value="Nama Lengkap" required />
+                            <TextInput
+                                id="name"
+                                type="text"
+                                name="name"
+                                value={data.name}
+                                onChange={(e) => setData("name", e.target.value)}
+                                className="mt-1 block w-full"
+                                error={errors.name}
+                                placeholder="Nama kamu"
+                            />
+                            {errors.name && (
+                                <div className="mt-1 text-sm text-red-600">
+                                    {errors.name}
+                                </div>
+                            )}
+                        </div>
+
+                        <div>
+                            <InputLabel htmlFor="email" value="Email" required />
+                            <TextInput
+                                id="email"
+                                type="email"
+                                name="email"
+                                value={data.email}
+                                onChange={(e) => setData("email", e.target.value)}
+                                className="mt-1 block w-full"
+                                error={errors.email}
+                                placeholder="contoh@email.com"
+                            />
+                            {errors.email && (
+                                <div className="mt-1 text-sm text-red-600">
+                                    {errors.email}
+                                </div>
+                            )}
+                        </div>
+
+                        <div>
+                            <InputLabel htmlFor="password" value="Password" required />
+                            <TextInput
+                                id="password"
+                                type="password"
+                                name="password"
+                                value={data.password}
+                                onChange={(e) => setData("password", e.target.value)}
+                                className="mt-1 block w-full"
+                                error={errors.password}
+                                placeholder="Minimal 8 karakter"
+                            />
+                            {errors.password && (
+                                <div className="mt-1 text-sm text-red-600">
+                                    {errors.password}
+                                </div>
+                            )}
+                        </div>
+
+                        <div>
+                            <InputLabel htmlFor="password_confirmation" value="Konfirmasi Password" required />
+                            <TextInput
+                                id="password_confirmation"
+                                type="password"
+                                name="password_confirmation"
+                                value={data.password_confirmation}
+                                onChange={(e) => setData("password_confirmation", e.target.value)}
+                                className="mt-1 block w-full"
+                                placeholder="Ulangi password"
+                            />
+                        </div>
+
+                        <div>
+                            <PrimaryButton className="w-full" disabled={processing}>
+                                Daftar
+                            </PrimaryButton>
+                        </div>
+                    </form>
+
+                    <div className="mt-6">
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="w-full border-t border-gray-300"></div>
+                            </div>
+                            <div className="relative flex justify-center text-sm">
+                                <span className="px-2 bg-white text-gray-500">
+                                    Sudah punya akun?
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className="mt-6">
+                            <Link
+                                href={route("login")}
+                                className="block w-full text-center py-2.5 text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
+                            >
+                                Masuk
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p className="mt-8 text-xs text-gray-400">
+                © {new Date().getFullYear()} LibSys — Sistem Manajemen Perpustakaan
             </p>
         </div>
     );

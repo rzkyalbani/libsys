@@ -15,22 +15,42 @@ export default function Dashboard({ auth, stats, chartData }) {
         {
             title: "Total Buku",
             value: stats.books,
-            color: "bg-blue-50 border-blue-200 text-blue-700",
+            icon: (
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                </svg>
+            ),
+            color: "text-blue-600 bg-blue-50",
         },
         {
             title: "Total Member",
             value: stats.members,
-            color: "bg-emerald-50 border-emerald-200 text-emerald-700",
+            icon: (
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                </svg>
+            ),
+            color: "text-emerald-600 bg-emerald-50",
         },
         {
             title: "Peminjaman Aktif",
             value: stats.borrowings,
-            color: "bg-amber-50 border-amber-200 text-amber-700",
+            icon: (
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+            ),
+            color: "text-amber-600 bg-amber-50",
         },
         {
             title: "Total Denda",
             value: `Rp ${Number(stats.fines).toLocaleString("id-ID")}`,
-            color: "bg-rose-50 border-rose-200 text-rose-700",
+            icon: (
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            ),
+            color: "text-rose-600 bg-rose-50",
         },
     ];
 
@@ -39,123 +59,148 @@ export default function Dashboard({ auth, stats, chartData }) {
             title: "Kelola Buku",
             desc: "Tambah, ubah, dan hapus data buku.",
             href: route("admin.books.index"),
-            color: "from-blue-500 to-indigo-500",
+            icon: (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                </svg>
+            ),
         },
         {
             title: "Kelola Kategori",
             desc: "Atur kategori buku agar rapi.",
             href: route("admin.categories.index"),
-            color: "from-emerald-500 to-green-500",
+            icon: (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                </svg>
+            ),
         },
         {
             title: "Kelola Member",
             desc: "Manajemen member perpustakaan.",
             href: route("admin.members.index"),
-            color: "from-pink-500 to-rose-500",
+            icon: (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                </svg>
+            ),
         },
         {
             title: "Pengaturan Sistem",
             desc: "Ubah konfigurasi sistem & limit.",
             href: route("admin.settings.index"),
-            color: "from-amber-500 to-orange-500",
+            icon: (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+            ),
         },
     ];
 
     return (
-        <div className="min-h-screen bg-gray-50">
-            <div className="max-w-7xl mx-auto px-6 py-8 space-y-10">
-                {/* Header */}
-                <header className="space-y-1">
-                    <h1 className="text-3xl font-semibold text-gray-900 tracking-tight">
-                        Selamat Datang, {auth.user.name}
-                    </h1>
-                    <p className="text-gray-500 text-sm">
-                        Anda masuk sebagai{" "}
-                        <span className="font-medium text-blue-600">
-                            {auth.user.role}
-                        </span>
-                    </p>
-                </header>
+        <div className="main-container py-8">
+            {/* Header */}
+            <header className="page-header">
+                <h1 className="page-title">
+                    Selamat Datang, {auth.user.name}
+                </h1>
+                <p className="page-subtitle">
+                    Anda masuk sebagai{" "}
+                    <span className="font-medium text-blue-600">
+                        {auth.user.role}
+                    </span>
+                </p>
+            </header>
 
-                {/* Statistik Cards */}
-                <section className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {summary.map((item, i) => (
-                        <div
-                            key={i}
-                            className={`p-6 rounded-xl border ${item.color} shadow-sm hover:shadow-md transition-all`}
-                        >
-                            <h3 className="text-sm font-medium text-gray-600 mb-2 tracking-tight">
+            {/* Statistik Cards */}
+            <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                {summary.map((item, i) => (
+                    <div
+                        key={i}
+                        className="card p-5 flex items-center gap-4"
+                    >
+                        <div className={`p-3 rounded-lg ${item.color}`}>
+                            {item.icon}
+                        </div>
+                        <div>
+                            <h3 className="text-sm font-medium text-gray-500 mb-1">
                                 {item.title}
                             </h3>
-                            <p className="text-3xl font-semibold">
+                            <p className="text-2xl font-bold text-gray-900">
                                 {item.value}
                             </p>
                         </div>
-                    ))}
-                </section>
+                    </div>
+                ))}
+            </section>
 
-                {/* Grafik Aktivitas Bulanan */}
-                <section className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                    <h2 className="text-xl font-semibold text-gray-900 mb-6">
-                        Aktivitas Peminjaman per Bulan
-                    </h2>
+            {/* Grafik Aktivitas Bulanan */}
+            <section className="card p-6 mb-8">
+                <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                    Aktivitas Peminjaman per Bulan
+                </h2>
 
-                    {chartData.length > 0 ? (
-                        <ResponsiveContainer width="100%" height={300}>
-                            <LineChart data={chartData}>
-                                <CartesianGrid
-                                    strokeDasharray="3 3"
-                                    stroke="#e5e7eb"
-                                />
-                                <XAxis
-                                    dataKey="month"
-                                    tick={{ fontSize: 12 }}
-                                />
-                                <YAxis allowDecimals={false} />
-                                <Tooltip
-                                    contentStyle={{
-                                        backgroundColor: "white",
-                                        borderRadius: "8px",
-                                        border: "1px solid #e5e7eb",
-                                    }}
-                                />
-                                <Line
-                                    type="monotone"
-                                    dataKey="total"
-                                    stroke="#2563eb"
-                                    strokeWidth={3}
-                                    dot={{ r: 4 }}
-                                />
-                            </LineChart>
-                        </ResponsiveContainer>
-                    ) : (
-                        <div className="flex flex-col items-center justify-center py-16 text-gray-500">
-                            <div className="text-5xl mb-3">📊</div>
-                            <p className="text-sm">
-                                Belum ada data peminjaman untuk ditampilkan.
-                            </p>
+                {chartData.length > 0 ? (
+                    <ResponsiveContainer width="100%" height={300}>
+                        <LineChart data={chartData}>
+                            <CartesianGrid
+                                strokeDasharray="3 3"
+                                stroke="#e5e7eb"
+                            />
+                            <XAxis
+                                dataKey="month"
+                                tick={{ fontSize: 12 }}
+                            />
+                            <YAxis allowDecimals={false} />
+                            <Tooltip
+                                contentStyle={{
+                                    backgroundColor: "white",
+                                    borderRadius: "8px",
+                                    border: "1px solid #e5e7eb",
+                                }}
+                            />
+                            <Line
+                                type="monotone"
+                                dataKey="total"
+                                stroke="#2563eb"
+                                strokeWidth={3}
+                                dot={{ r: 4 }}
+                            />
+                        </LineChart>
+                    </ResponsiveContainer>
+                ) : (
+                    <div className="flex flex-col items-center justify-center py-16 text-gray-500">
+                        <div className="text-5xl mb-3">📊</div>
+                        <p className="text-sm">
+                            Belum ada data peminjaman untuk ditampilkan.
+                        </p>
+                    </div>
+                )}
+            </section>
+
+            {/* Navigation Cards */}
+            <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                {menus.map((item, i) => (
+                    <Link
+                        key={i}
+                        href={item.href}
+                        className="card p-5 flex flex-col items-start gap-4 hover:shadow-md transition-shadow"
+                    >
+                        <div className="p-2 bg-blue-100 text-blue-600 rounded-lg">
+                            {item.icon}
                         </div>
-                    )}
-                </section>
-
-                {/* Navigation Cards */}
-                <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {menus.map((item, i) => (
-                        <Link
-                            key={i}
-                            href={item.href}
-                            className={`block bg-gradient-to-br ${item.color} text-white p-6 rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-transform duration-200`}
-                        >
-                            <h2 className="text-lg font-semibold mb-1 tracking-tight">
+                        <div>
+                            <h2 className="text-lg font-semibold text-gray-900 mb-1">
                                 {item.title}
                             </h2>
-                            <p className="text-sm opacity-90 leading-relaxed">
+                            <p className="text-sm text-gray-600">
                                 {item.desc}
                             </p>
-                        </Link>
-                    ))}
-                </section>
-            </div>
+                        </div>
+                    </Link>
+                ))}
+            </section>
         </div>
     );
 }
