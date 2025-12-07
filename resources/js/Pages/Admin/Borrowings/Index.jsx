@@ -1,6 +1,17 @@
 import { Link, usePage } from "@inertiajs/react";
 import AdminLayout from "../AdminLayout";
 
+// Function to format date
+const formatDate = (dateString) => {
+    if (!dateString) return "-";
+    const date = new Date(dateString);
+    return date.toLocaleDateString('id-ID', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+};
+
 export default function Index({ borrowings }) {
     const { flash } = usePage().props;
 
@@ -78,10 +89,10 @@ export default function Index({ borrowings }) {
                                         </span>
                                     </td>
                                     <td className="px-5 py-3 text-gray-600">
-                                        {b.borrow_date ?? "-"}
+                                        {formatDate(b.borrow_date)}
                                     </td>
                                     <td className="px-5 py-3 text-gray-600">
-                                        {b.due_date ?? "-"}
+                                        {formatDate(b.due_date)}
                                     </td>
                                     <td className="px-5 py-3 space-x-2">
                                         {b.status === "requested" && (

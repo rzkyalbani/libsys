@@ -13,10 +13,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // First run the basic seeders
         $this->call([
-            AdminUserSeeder::class,
-            CategorySeeder::class,
             SettingSeeder::class,
+            CategorySeeder::class,
+            AdminUserSeeder::class,
         ]);
+
+        // Then run the comprehensive seeder with more detailed data
+        $this->call(ComprehensiveSeeder::class);
     }
 }
