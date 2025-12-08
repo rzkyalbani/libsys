@@ -86,7 +86,7 @@ export default function Index({ books, categories, filters }) {
                         books.data.map((book, i) => (
                             <div
                                 key={book.id}
-                                className="bg-white border border-[rgb(229,229,229)] rounded-xl p-5 shadow-sm hover:shadow-md transition-all hover:-translate-y-[2px]"
+                                className="bg-white border border-[rgb(229,229,229)] rounded-xl p-5 shadow-sm hover:shadow-md transition-all hover:-translate-y-[2px] flex flex-col h-full"
                                 style={{
                                     animation: `fadeIn 0.4s ease-out ${
                                         i * 0.05
@@ -94,6 +94,30 @@ export default function Index({ books, categories, filters }) {
                                 }}
                             >
                                 <div className="flex flex-col h-full justify-between space-y-3">
+                                    {/* Cover Image */}
+                                    <div className="flex justify-center">
+                                        {book.cover_image ? (
+                                            <img
+                                                src={book.cover_image}
+                                                alt={book.title}
+                                                className="w-full h-40 object-cover rounded-lg border border-[rgb(229,229,229)] bg-white"
+                                                onError={(e) => {
+                                                    e.target.onerror = null;
+                                                    e.target.src = "/images/default-book-cover.png";
+                                                }}
+                                            />
+                                        ) : (
+                                            <div className="w-full h-40 flex items-center justify-center bg-[rgb(249,250,251)] rounded-lg border border-[rgb(229,229,229)]">
+                                                <div className="text-center p-4">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 mx-auto text-[rgb(156,163,175)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                                    </svg>
+                                                    <span className="text-xs text-[rgb(156,163,175)] mt-1 block">Cover tidak tersedia</span>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+
                                     {/* Info */}
                                     <div className="space-y-2">
                                         <h2 className="text-base font-semibold text-[rgb(23,23,23)] line-clamp-2">
@@ -125,7 +149,7 @@ export default function Index({ books, categories, filters }) {
                                     </div>
 
                                     {/* Actions */}
-                                    <div className="space-y-2">
+                                    <div className="space-y-2 mt-auto">
                                         <Link
                                             href={
                                                 book.available_copies > 0

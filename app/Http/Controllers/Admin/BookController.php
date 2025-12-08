@@ -40,6 +40,7 @@ class BookController extends Controller
             'available_copies' => 'nullable|integer|min:0',
             'description' => 'nullable|string',
             'file' => 'nullable|mimes:pdf|max:20480',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240', // Max 10MB
         ]);
 
         // Jika available_copies tidak diisi, samakan dengan total_copies
@@ -54,14 +55,21 @@ class BookController extends Controller
             ])->withInput();
         }
 
-        // Upload file jika ada
-        $path = null;
-        if ($request->hasFile('file')) {
-            $path = $request->file('file')->store('books', 'public');
+        // Handle cover image upload
+        $coverImagePath = null;
+        if ($request->hasFile('cover_image')) {
+            $coverImagePath = $request->file('cover_image')->store('book_covers', 'public');
         }
 
-        // Tambahkan file_path ke data
-        $validated['file_path'] = $path;
+        // Upload file jika ada
+        $filePath = null;
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('books', 'public');
+        }
+
+        // Tambahkan file_path dan cover_image ke data
+        $validated['file_path'] = $filePath;
+        $validated['cover_image'] = $coverImagePath;
 
         Book::create($validated);
 
@@ -87,7 +95,8 @@ class BookController extends Controller
             'total_copies' => 'required|integer|min:1',
             'available_copies' => 'nullable|integer|min:0',
             'description' => 'nullable|string',
-            'file' => 'nullable|mimes:pdf|max:20480', 
+            'file' => 'nullable|mimes:pdf|max:20480',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240', // Max 10MB
         ]);
 
         // Jika available_copies tidak diisi, samakan dengan total_copies
@@ -100,6 +109,17 @@ class BookController extends Controller
             return back()->withErrors([
                 'available_copies' => 'Jumlah buku tersedia tidak boleh melebihi total eksemplar.',
             ])->withInput();
+        }
+
+        // Handle cover image upload
+        if ($request->hasFile('cover_image')) {
+            // Hapus cover image lama jika ada
+            if ($book->cover_image && Storage::disk('public')->exists(str_replace('/storage/', '', $book->cover_image))) {
+                Storage::disk('public')->delete(str_replace('/storage/', '', $book->cover_image));
+            }
+
+            // Simpan cover image baru
+            $validated['cover_image'] = $request->file('cover_image')->store('book_covers', 'public');
         }
 
         // Jika admin upload file baru
