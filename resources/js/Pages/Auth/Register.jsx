@@ -1,5 +1,5 @@
 import { Head, Link, useForm } from "@inertiajs/react";
-import PrimaryButton from "@/Components/PrimaryButton";
+import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 
@@ -17,30 +17,31 @@ export default function Register() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50 px-4 sm:px-6 lg:px-8">
-            <Head title="Daftar Akun LibSys" />
+        <div className="min-h-screen bg-gradient-to-b from-[rgb(239,246,255)] to-white flex flex-col justify-center items-center px-4 py-12 sm:px-6 lg:px-8">
+            <Head title="Daftar Anggota Perpustakaan" />
 
-            <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                <div className="flex justify-center">
-                    <div className="p-3 bg-blue-100 text-blue-600 rounded-xl">
-                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                        </svg>
+            {/* Header */}
+            <div className="w-full max-w-md space-y-8">
+                <div className="text-center">
+                    <div className="flex justify-center mb-4">
+                        <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
                     </div>
+                    
+                    <h2 className="text-3xl font-bold text-[rgb(23,23,23)] tracking-tight">
+                        Daftar Sebagai Anggota
+                    </h2>
+                    <p className="mt-2 text-sm text-[rgb(115,115,115)]">
+                        Bergabung dengan komunitas pembaca dan akses layanan perpustakaan
+                    </p>
                 </div>
 
-                <h2 className="mt-6 text-center text-2xl font-bold tracking-tight text-gray-900">
-                    Buat Akun Baru
-                </h2>
-                <p className="mt-2 text-center text-sm text-gray-500">
-                    Bergabunglah dan nikmati akses penuh ke LibSys
-                </p>
-            </div>
-
-            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-                <div className="bg-white py-8 px-6 shadow rounded-lg sm:px-10 card">
+                <div className="mt-8">
                     <form onSubmit={submit} className="space-y-6">
-                        <div>
+                        <div className="space-y-2">
                             <InputLabel htmlFor="name" value="Nama Lengkap" required />
                             <TextInput
                                 id="name"
@@ -48,83 +49,87 @@ export default function Register() {
                                 name="name"
                                 value={data.name}
                                 onChange={(e) => setData("name", e.target.value)}
-                                className="mt-1 block w-full"
+                                className="mt-1 block w-full py-3 px-4 rounded-lg border border-[rgb(209,213,219)] text-[rgb(23,23,23)] placeholder-[rgb(163,163,163)] focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 error={errors.name}
-                                placeholder="Nama kamu"
+                                placeholder="Nama lengkap Anda"
                             />
-                            {errors.name && (
-                                <div className="mt-1 text-sm text-red-600">
-                                    {errors.name}
-                                </div>
-                            )}
+                            <InputError message={errors.name} className="mt-1" />
                         </div>
 
-                        <div>
-                            <InputLabel htmlFor="email" value="Email" required />
+                        <div className="space-y-2">
+                            <InputLabel htmlFor="email" value="Alamat Email" required />
                             <TextInput
                                 id="email"
                                 type="email"
                                 name="email"
                                 value={data.email}
                                 onChange={(e) => setData("email", e.target.value)}
-                                className="mt-1 block w-full"
+                                className="mt-1 block w-full py-3 px-4 rounded-lg border border-[rgb(209,213,219)] text-[rgb(23,23,23)] placeholder-[rgb(163,163,163)] focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 error={errors.email}
-                                placeholder="contoh@email.com"
+                                placeholder="alamat@email.com"
                             />
-                            {errors.email && (
-                                <div className="mt-1 text-sm text-red-600">
-                                    {errors.email}
-                                </div>
-                            )}
+                            <InputError message={errors.email} className="mt-1" />
                         </div>
 
-                        <div>
-                            <InputLabel htmlFor="password" value="Password" required />
+                        <div className="space-y-2">
+                            <InputLabel htmlFor="password" value="Buat Kata Sandi" required />
                             <TextInput
                                 id="password"
                                 type="password"
                                 name="password"
                                 value={data.password}
                                 onChange={(e) => setData("password", e.target.value)}
-                                className="mt-1 block w-full"
+                                className="mt-1 block w-full py-3 px-4 rounded-lg border border-[rgb(209,213,219)] text-[rgb(23,23,23)] placeholder-[rgb(163,163,163)] focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 error={errors.password}
                                 placeholder="Minimal 8 karakter"
                             />
-                            {errors.password && (
-                                <div className="mt-1 text-sm text-red-600">
-                                    {errors.password}
-                                </div>
-                            )}
+                            <InputError message={errors.password} className="mt-1" />
                         </div>
 
-                        <div>
-                            <InputLabel htmlFor="password_confirmation" value="Konfirmasi Password" required />
+                        <div className="space-y-2">
+                            <InputLabel htmlFor="password_confirmation" value="Konfirmasi Kata Sandi" required />
                             <TextInput
                                 id="password_confirmation"
                                 type="password"
                                 name="password_confirmation"
                                 value={data.password_confirmation}
                                 onChange={(e) => setData("password_confirmation", e.target.value)}
-                                className="mt-1 block w-full"
-                                placeholder="Ulangi password"
+                                className="mt-1 block w-full py-3 px-4 rounded-lg border border-[rgb(209,213,219)] text-[rgb(23,23,23)] placeholder-[rgb(163,163,163)] focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="Ulangi kata sandi Anda"
                             />
                         </div>
 
+                        <div className="text-sm text-[rgb(115,115,115)]">
+                            Dengan mendaftar, Anda menyetujui{' '}
+                            <Link href="#" className="text-blue-600 hover:text-blue-500">
+                                Syarat dan Ketentuan
+                            </Link>{' '}
+                            serta{' '}
+                            <Link href="#" className="text-blue-600 hover:text-blue-500">
+                                Kebijakan Privasi
+                            </Link>{' '}
+                            kami.
+                        </div>
+
                         <div>
-                            <PrimaryButton className="w-full" disabled={processing}>
-                                Daftar
-                            </PrimaryButton>
+                            <button
+                                type="submit"
+                                disabled={processing}
+                                className="btn btn-primary btn-lg w-full"
+                            >
+                                {processing ? 'Memproses...' : 'Daftar Sebagai Anggota'}
+                            </button>
                         </div>
                     </form>
 
-                    <div className="mt-6">
+                    <div className="mt-8">
                         <div className="relative">
                             <div className="absolute inset-0 flex items-center">
-                                <div className="w-full border-t border-gray-300"></div>
+                                <div className="w-full border-t border-[rgb(229,229,229)]"></div>
                             </div>
                             <div className="relative flex justify-center text-sm">
-                                <span className="px-2 bg-white text-gray-500">
-                                    Sudah punya akun?
+                                <span className="px-2 bg-white text-[rgb(115,115,115)]">
+                                    Sudah menjadi anggota?
                                 </span>
                             </div>
                         </div>
@@ -132,18 +137,18 @@ export default function Register() {
                         <div className="mt-6">
                             <Link
                                 href={route("login")}
-                                className="block w-full text-center py-2.5 text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
+                                className="btn btn-outline btn-lg w-full text-center"
                             >
-                                Masuk
+                                Masuk ke Akun Anda
                             </Link>
                         </div>
                     </div>
                 </div>
+                
+                <div className="text-center text-xs text-[rgb(163,163,163)] mt-12">
+                    <p>© {new Date().getFullYear()} Perpustakaan Kita. Hak Cipta Dilindungi.</p>
+                </div>
             </div>
-
-            <p className="mt-8 text-xs text-gray-400">
-                © {new Date().getFullYear()} LibSys — Sistem Manajemen Perpustakaan
-            </p>
         </div>
     );
 }

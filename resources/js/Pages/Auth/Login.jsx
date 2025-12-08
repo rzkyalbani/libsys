@@ -1,6 +1,5 @@
 import { Head, Link, useForm } from "@inertiajs/react";
-import PrimaryButton from "@/Components/PrimaryButton";
-import SecondaryButton from "@/Components/SecondaryButton";
+import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 
@@ -17,28 +16,29 @@ export default function Login({ status, canResetPassword }) {
     };
 
     return (
-        <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50 px-4 sm:px-6 lg:px-8">
-            <Head title="Masuk ke LibSys" />
+        <div className="min-h-screen bg-gradient-to-b from-[rgb(239,246,255)] to-white flex flex-col justify-center items-center px-4 py-12 sm:px-6 lg:px-8">
+            <Head title="Akses Akun Anggota" />
 
-            <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                <div className="flex justify-center">
-                    <div className="p-3 bg-blue-100 text-blue-600 rounded-xl">
-                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                        </svg>
+            {/* Header */}
+            <div className="w-full max-w-md space-y-8">
+                <div className="text-center">
+                    <div className="flex justify-center mb-4">
+                        <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
+                            </svg>
+                        </div>
                     </div>
+                    
+                    <h2 className="text-3xl font-bold text-[rgb(23,23,23)] tracking-tight">
+                        Akses Akun Anggota
+                    </h2>
+                    <p className="mt-2 text-sm text-[rgb(115,115,115)]">
+                        Masuk untuk mengakses layanan perpustakaan Anda
+                    </p>
                 </div>
 
-                <h2 className="mt-6 text-center text-2xl font-bold tracking-tight text-gray-900">
-                    Masuk ke LibSys
-                </h2>
-                <p className="mt-2 text-center text-sm text-gray-500">
-                    Akses dashboard dan mulai eksplorasi buku
-                </p>
-            </div>
-
-            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-                <div className="bg-white py-8 px-6 shadow rounded-lg sm:px-10 card">
+                <div className="mt-8">
                     {status && (
                         <div className="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
                             {status}
@@ -46,88 +46,81 @@ export default function Login({ status, canResetPassword }) {
                     )}
 
                     <form onSubmit={submit} className="space-y-6">
-                        <div>
-                            <InputLabel htmlFor="email" value="Email" required />
+                        <div className="space-y-2">
+                            <InputLabel htmlFor="email" value="Email Anggota" required />
                             <TextInput
                                 id="email"
                                 type="email"
                                 name="email"
                                 value={data.email}
                                 onChange={(e) => setData("email", e.target.value)}
-                                className="mt-1 block w-full"
+                                className="mt-1 block w-full py-3 px-4 rounded-lg border border-[rgb(209,213,219)] text-[rgb(23,23,23)] placeholder-[rgb(163,163,163)] focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 error={errors.email}
-                                placeholder="contoh@email.com"
+                                placeholder="alamat@email.com"
                                 autoComplete="username"
                             />
-                            {errors.email && (
-                                <div className="mt-1 text-sm text-red-600">
-                                    {errors.email}
-                                </div>
-                            )}
+                            <InputError message={errors.email} className="mt-1" />
                         </div>
 
-                        <div>
-                            <InputLabel htmlFor="password" value="Password" required />
+                        <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                                <InputLabel htmlFor="password" value="Kata Sandi" required />
+                                {canResetPassword && (
+                                    <Link
+                                        href={route("password.request")}
+                                        className="text-sm text-blue-600 hover:text-blue-500"
+                                    >
+                                        Lupa sandi?
+                                    </Link>
+                                )}
+                            </div>
                             <TextInput
                                 id="password"
                                 type="password"
                                 name="password"
                                 value={data.password}
                                 onChange={(e) => setData("password", e.target.value)}
-                                className="mt-1 block w-full"
+                                className="mt-1 block w-full py-3 px-4 rounded-lg border border-[rgb(209,213,219)] text-[rgb(23,23,23)] placeholder-[rgb(163,163,163)] focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 error={errors.password}
                                 placeholder="••••••••"
                                 autoComplete="current-password"
                             />
-                            {errors.password && (
-                                <div className="mt-1 text-sm text-red-600">
-                                    {errors.password}
-                                </div>
-                            )}
+                            <InputError message={errors.password} className="mt-1" />
                         </div>
 
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center">
-                                <input
-                                    id="remember"
-                                    type="checkbox"
-                                    name="remember"
-                                    checked={data.remember}
-                                    onChange={(e) => setData("remember", e.target.checked)}
-                                    className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                                />
-                                <label htmlFor="remember" className="ml-2 block text-sm text-gray-700">
-                                    Ingat saya
-                                </label>
-                            </div>
-
-                            {canResetPassword && (
-                                <div className="text-sm">
-                                    <Link
-                                        href={route("password.request")}
-                                        className="font-medium text-blue-600 hover:text-blue-500"
-                                    >
-                                        Lupa password?
-                                    </Link>
-                                </div>
-                            )}
+                        <div className="flex items-center pt-2">
+                            <input
+                                id="remember"
+                                type="checkbox"
+                                name="remember"
+                                checked={data.remember}
+                                onChange={(e) => setData("remember", e.target.checked)}
+                                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                            />
+                            <label htmlFor="remember" className="ml-2 block text-sm text-[rgb(115,115,115)]">
+                                Ingat saya
+                            </label>
                         </div>
 
                         <div>
-                            <PrimaryButton className="w-full" disabled={processing}>
-                                Masuk
-                            </PrimaryButton>
+                            <button
+                                type="submit"
+                                disabled={processing}
+                                className="btn btn-primary btn-lg w-full"
+                            >
+                                {processing ? 'Memproses...' : 'Masuk ke Akun'}
+                            </button>
                         </div>
                     </form>
 
-                    <div className="mt-6">
+                    <div className="mt-8">
                         <div className="relative">
                             <div className="absolute inset-0 flex items-center">
-                                <div className="w-full border-t border-gray-300"></div>
+                                <div className="w-full border-t border-[rgb(229,229,229)]"></div>
                             </div>
                             <div className="relative flex justify-center text-sm">
-                                <span className="px-2 bg-white text-gray-500">
-                                    Belum punya akun?
+                                <span className="px-2 bg-white text-[rgb(115,115,115)]">
+                                    Belum menjadi anggota?
                                 </span>
                             </div>
                         </div>
@@ -135,18 +128,18 @@ export default function Login({ status, canResetPassword }) {
                         <div className="mt-6">
                             <Link
                                 href={route("register")}
-                                className="block w-full text-center py-2.5 text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
+                                className="btn btn-outline btn-lg w-full text-center"
                             >
-                                Daftar sekarang
+                                Daftar Sebagai Anggota
                             </Link>
                         </div>
                     </div>
                 </div>
+                
+                <div className="text-center text-xs text-[rgb(163,163,163)] mt-12">
+                    <p>© {new Date().getFullYear()} Perpustakaan Kita. Hak Cipta Dilindungi.</p>
+                </div>
             </div>
-
-            <p className="mt-8 text-xs text-gray-400">
-                © {new Date().getFullYear()} LibSys — Sistem Manajemen Perpustakaan
-            </p>
         </div>
     );
 }
