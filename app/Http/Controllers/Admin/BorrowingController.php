@@ -52,18 +52,12 @@ class BorrowingController extends Controller
 
         // === RETURN BOOK ===
         if ($action === 'return' && $borrowing->status === 'borrowed') {
-            $fine = 0;
-            $now = now();
-
-            if ($now->gt($borrowing->due_date)) {
-                $daysLate = $now->diffInDays($borrowing->due_date);
-                $fineRate = (int) Setting::get('fine_rate_per_day', 1000);
-                $fine = $daysLate * $fineRate * -1;
-            }
+            // Gunakan metode baru untuk menghitung denda secara konsisten
+            $fine = $borrowing->calculateFine();
 
             $borrowing->update([
                 'status' => 'returned',
-                'return_date' => $now,
+                'return_date' => now(),
                 'fine_amount' => $fine,
             ]);
 
