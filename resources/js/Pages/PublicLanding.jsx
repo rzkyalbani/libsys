@@ -26,7 +26,7 @@ export default function PublicLanding({ canLogin, canRegister }) {
                         {canLogin && (
                             <Link
                                 href={route("login")}
-                                className="text-sm font-medium text-[rgb(115,115,115)] hover:text-blue-600 transition"
+                                className="text-sm font-medium text-[rgb(115,115,115)] hover:text-blue-600 transition py-2 px-3 rounded-lg hover:bg-[rgb(245,245,245)]"
                             >
                                 Masuk
                             </Link>
@@ -61,13 +61,13 @@ export default function PublicLanding({ canLogin, canRegister }) {
                     <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
                         <Link
                             href="#services"
-                            className="btn btn-primary"
+                            className="btn btn-primary btn-lg px-8 py-4 text-base font-medium"
                         >
                             Jelajahi Layanan Kami
                         </Link>
                         <Link
                             href="#visit"
-                            className="btn btn-outline"
+                            className="btn btn-outline btn-lg px-8 py-4 text-base font-medium"
                         >
                             Kunjungi Kami
                         </Link>
@@ -315,16 +315,16 @@ export default function PublicLanding({ canLogin, canRegister }) {
                         sumber daya digital, dan ruang belajar yang mendukung perjalanan
                         pembelajaran Anda.
                     </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <div className="flex flex-col sm:flex-row gap-6 justify-center">
                         <Link
                             href={canRegister ? route("register") : "#"}
-                            className="btn btn-sm"
+                            className="btn btn-primary btn-lg px-8 py-4 text-base font-medium"
                         >
                             Daftar Sebagai Anggota
                         </Link>
                         <Link
                             href="#"
-                            className="btn btn-outline btn-sm text-white border-white hover:bg-white/10"
+                            className="btn btn-outline btn-lg px-8 py-4 text-base font-medium text-blue border-white hover:text-white hover:bg-white/10"
                         >
                             Jelajahi Koleksi
                         </Link>
