@@ -35,15 +35,18 @@ class Book extends Model
         $value = $this->attributes['cover_image'] ?? null;
 
         if ($value) {
-            // Check if value is already a full URL
-            if (filter_var($value, FILTER_VALIDATE_URL) || str_starts_with($value, '/storage/')) {
+            // Check if value is already a complete URL
+            if (filter_var($value, FILTER_VALIDATE_URL)) {
                 return $value;
             }
-            // If it's just a path, use Storage::url to generate the full URL
+
+            // If it's a relative path (like 'book_covers/filename.jpg'), use Storage::url to generate the full URL
+            // Storage::url() automatically creates URLs like 'http://yoursite.com/storage/book_covers/filename.jpg'
+            // This assumes storage is properly linked with 'php artisan storage:link'
             return Storage::url($value);
         }
 
         // Fallback to a default cover image
-        return asset('images/default-book-cover.png'); // This will be created later if needed
+        return asset('images/default-book-cover.png');
     }
 }

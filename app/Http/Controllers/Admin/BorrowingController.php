@@ -14,7 +14,7 @@ class BorrowingController extends Controller
     {
         $borrowings = Borrowing::with(['book', 'user'])
             ->orderByDesc('created_at')
-            ->get();
+            ->paginate(10);  // Add pagination
 
         return Inertia::render('Admin/Borrowings/Index', [
             'borrowings' => $borrowings,

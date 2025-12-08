@@ -175,6 +175,23 @@ export default function Create({ categories }) {
                 </div>
 
                 <div className="form-group">
+                    <InputLabel htmlFor="cover_image" value="Cover Buku" />
+                    <input
+                        id="cover_image"
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setData("cover_image", e.target.files[0])}
+                        className="input-field mt-1 block w-full"
+                    />
+                    {errors.cover_image && (
+                        <div className="mt-1 text-sm text-red-600">
+                            {errors.cover_image}
+                        </div>
+                    )}
+                    <p className="text-xs text-gray-500 mt-1">Format yang diperbolehkan: JPG, PNG, maksimal 10MB</p>
+                </div>
+
+                <div className="form-group">
                     <InputLabel htmlFor="file" value="File E-book (PDF)" />
                     <input
                         id="file"

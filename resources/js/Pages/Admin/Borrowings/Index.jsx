@@ -63,8 +63,8 @@ export default function Index({ borrowings }) {
                     </thead>
 
                     <tbody>
-                        {borrowings.length > 0 ? (
-                            borrowings.map((b) => (
+                        {borrowings.data.length > 0 ? (
+                            borrowings.data.map((b) => (
                                 <tr
                                     key={b.id}
                                     className="border-b last:border-none hover:bg-gray-50 transition-all"
@@ -139,6 +139,26 @@ export default function Index({ borrowings }) {
                     </tbody>
                 </table>
             </div>
+
+            {/* Pagination */}
+            {borrowings.links && borrowings.data.length > 0 && (
+                <div className="flex justify-center gap-2 pt-6">
+                    {borrowings.links.map((link, i) => (
+                        <Link
+                            key={i}
+                            href={link.url || "#"}
+                            className={`px-3 py-1.5 rounded text-sm font-medium transition ${
+                                link.active
+                                    ? "bg-blue-600 text-white"
+                                    : link.url
+                                    ? "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
+                                    : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                            }`}
+                            dangerouslySetInnerHTML={{ __html: link.label }}
+                        />
+                    ))}
+                </div>
+            )}
         </div>
     );
 }

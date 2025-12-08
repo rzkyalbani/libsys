@@ -15,7 +15,7 @@ class ReservationController extends Controller
             ->where('user_id', auth()->id())
             ->whereIn('status', ['waiting', 'notified', 'cancelled'])
             ->latest()
-            ->get();
+            ->paginate(10);
 
         return Inertia::render('Member/Reservations/Index', [
             'reservations' => $reservations,

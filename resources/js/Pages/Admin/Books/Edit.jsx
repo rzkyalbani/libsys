@@ -18,6 +18,10 @@ export default function Edit({ categories, book }) {
         book.file_path ? `/storage/${book.file_path}` : null
     );
 
+    const [previewCover, setPreviewCover] = useState(
+        book.cover_image ? book.cover_image : null
+    );
+
     const submit = (e) => {
         e.preventDefault();
 
@@ -41,6 +45,17 @@ export default function Edit({ categories, book }) {
         if (file) {
             const url = URL.createObjectURL(file);
             setPreviewFile(url);
+        }
+    };
+
+    const handleCoverChange = (e) => {
+        const file = e.target.files[0];
+        setData("cover_image", file);
+
+        // tampilkan preview gambar baru
+        if (file) {
+            const url = URL.createObjectURL(file);
+            setPreviewCover(url);
         }
     };
 
@@ -159,6 +174,34 @@ export default function Edit({ categories, book }) {
                             }
                             className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                         />
+                    </div>
+
+                    {/* Cover Image */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                            Cover Buku
+                        </label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleCoverChange}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm file:mr-4 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:bg-gray-100 hover:file:bg-gray-200 transition-all"
+                        />
+
+                        {/* Preview cover */}
+                        {previewCover && (
+                            <div className="mt-4 border rounded-lg overflow-hidden bg-gray-50 p-3">
+                                <p className="text-sm font-medium text-gray-600 mb-2">
+                                    Pratinjau Cover:
+                                </p>
+                                <img
+                                    src={previewCover}
+                                    alt="Preview cover"
+                                    className="w-full h-48 object-contain rounded-lg border bg-white"
+                                />
+                            </div>
+                        )}
+                        <p className="text-xs text-gray-500 mt-1">Format yang diperbolehkan: JPG, PNG, maksimal 10MB</p>
                     </div>
 
                     {/* File PDF */}

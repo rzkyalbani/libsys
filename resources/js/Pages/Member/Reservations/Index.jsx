@@ -31,7 +31,7 @@ export default function Index({ reservations }) {
                 )}
 
                 {/* Empty State */}
-                {reservations.length === 0 ? (
+                {reservations.data.length === 0 ? (
                     <div className="text-[rgb(107,114,128)] italic py-20 text-center max-w-6xl mx-auto">
                         <div className="flex flex-col items-center">
                             <p className="text-5xl mb-3 text-[rgb(156,163,175)]">🔍</p>
@@ -67,7 +67,7 @@ export default function Index({ reservations }) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {reservations.map((r) => (
+                                {reservations.data.map((r) => (
                                     <tr
                                         key={r.id}
                                         className="border-b last:border-none hover:bg-[rgb(249,250,251)] transition-all"
@@ -133,6 +133,26 @@ export default function Index({ reservations }) {
                                 ))}
                             </tbody>
                         </table>
+                    </div>
+                )}
+
+                {/* Pagination */}
+                {reservations.links && reservations.data.length > 0 && (
+                    <div className="flex justify-center gap-2 pt-6 max-w-6xl mx-auto">
+                        {reservations.links.map((link, i) => (
+                            <Link
+                                key={i}
+                                href={link.url || "#"}
+                                className={`px-3 py-1.5 rounded text-sm transition ${
+                                    link.active
+                                        ? "bg-blue-600 text-white"
+                                        : link.url
+                                        ? "bg-white border border-[rgb(229,229,229)] text-[rgb(31,41,55)] hover:bg-[rgb(249,250,251)]"
+                                        : "bg-[rgb(249,250,251)] text-[rgb(156,163,175)] cursor-not-allowed"
+                                }`}
+                                dangerouslySetInnerHTML={{ __html: link.label }}
+                            />
+                        ))}
                     </div>
                 )}
             </div>

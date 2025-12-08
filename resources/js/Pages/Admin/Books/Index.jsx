@@ -102,6 +102,26 @@ export default function Index({ books }) {
                     </table>
                 </div>
             </div>
+
+            {/* Pagination */}
+            {books.links && books.data.length > 0 && (
+                <div className="flex justify-center gap-2 pt-6">
+                    {books.links.map((link, i) => (
+                        <Link
+                            key={i}
+                            href={link.url || "#"}
+                            className={`px-3 py-1.5 rounded text-sm font-medium transition ${
+                                link.active
+                                    ? "bg-blue-600 text-white"
+                                    : link.url
+                                    ? "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
+                                    : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                            }`}
+                            dangerouslySetInnerHTML={{ __html: link.label }}
+                        />
+                    ))}
+                </div>
+            )}
         </div>
     );
 }

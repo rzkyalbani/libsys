@@ -1,9 +1,12 @@
 import { Link, router, usePage } from "@inertiajs/react";
 import MemberLayout from "../MemberLayout";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function Index({ books, categories, filters }) {
     const { flash } = usePage().props;
+
+    // Ref to track if filter change is user-initiated
+    const isUserFilterChange = useRef(false);
 
     // Local state buat search dan kategori
     const [search, setSearch] = useState(filters.search || "");
@@ -13,7 +16,11 @@ export default function Index({ books, categories, filters }) {
     const handleFilterChange = (newSearch, newCategory) => {
         router.get(
             route("member.books.index"),
-            { search: newSearch, category: newCategory },
+            {
+                search: newSearch,
+                category: newCategory,
+                page: 1 // Reset to page 1 when filters change
+            },
             {
                 preserveState: true,
                 replace: true,
@@ -22,11 +29,14 @@ export default function Index({ books, categories, filters }) {
     };
 
     useEffect(() => {
-        const delayDebounce = setTimeout(() => {
-            handleFilterChange(search, category);
-        }, 400);
+        if (isUserFilterChange.current) {
+            isUserFilterChange.current = false; // Reset the flag
+            const delayDebounce = setTimeout(() => {
+                handleFilterChange(search, category);
+            }, 400);
 
-        return () => clearTimeout(delayDebounce);
+            return () => clearTimeout(delayDebounce);
+        }
     }, [search, category]);
 
     return (
@@ -61,14 +71,20 @@ export default function Index({ books, categories, filters }) {
                         type="text"
                         name="search"
                         value={search}
-                        onChange={(e) => setSearch(e.target.value)}
+                        onChange={(e) => {
+                            setSearch(e.target.value);
+                            isUserFilterChange.current = true;
+                        }}
                         placeholder="Cari judul atau penulis buku..."
                         className="flex-1 px-4 py-2.5 border border-[rgb(209,213,219)] rounded-lg text-sm text-[rgb(23,23,23)] placeholder-[rgb(163,163,163)] focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     />
                     <select
                         name="category"
                         value={category}
-                        onChange={(e) => setCategory(e.target.value)}
+                        onChange={(e) => {
+                            setCategory(e.target.value);
+                            isUserFilterChange.current = true;
+                        }}
                         className="sm:w-56 px-4 py-2.5 border border-[rgb(209,213,219)] rounded-lg text-sm text-[rgb(23,23,23)] focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     >
                         <option value="">Semua Kategori</option>
@@ -96,18 +112,28 @@ export default function Index({ books, categories, filters }) {
                                 <div className="flex flex-col h-full justify-between space-y-3">
                                     {/* Cover Image */}
                                     <div className="flex justify-center">
-                                        {book.cover_image ? (
-                                            <img
-                                                src={book.cover_image}
-                                                alt={book.title}
-                                                className="w-full h-40 object-cover rounded-lg border border-[rgb(229,229,229)] bg-white"
-                                                onError={(e) => {
-                                                    e.target.onerror = null;
-                                                    e.target.src = "/images/default-book-cover.png";
-                                                }}
-                                            />
-                                        ) : (
-                                            <div className="w-full h-40 flex items-center justify-center bg-[rgb(249,250,251)] rounded-lg border border-[rgb(229,229,229)]">
+                                        {/* Cover Image with error handling */}
+                                        <div className="w-full h-40 rounded-lg border border-[rgb(229,229,229)] bg-white overflow-hidden">
+                                            {book.cover_image ? (
+                                                <img
+                                                    src={book.cover_image}
+                                                    alt={book.title}
+                                                    className="w-full h-full object-cover"
+                                                    onError={(e) => {
+                                                        e.target.onerror = null; // Prevent infinite loop
+                                                        e.target.style.display = 'none';
+                                                        const fallback = e.target.parentElement.querySelector('.cover-fallback');
+                                                        if (fallback) fallback.style.display = 'flex';
+                                                    }}
+                                                    onLoad={(e) => {
+                                                        // Ensure the fallback is hidden when image loads
+                                                        const fallback = e.target.parentElement.querySelector('.cover-fallback');
+                                                        if (fallback) fallback.style.display = 'none';
+                                                    }}
+                                                />
+                                            ) : null}
+                                            {/* Fallback for no image or error */}
+                                            <div className={`cover-fallback w-full h-full flex items-center justify-center bg-[rgb(249,250,251)] ${book.cover_image ? 'hidden' : ''}`}>
                                                 <div className="text-center p-4">
                                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 mx-auto text-[rgb(156,163,175)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -115,7 +141,7 @@ export default function Index({ books, categories, filters }) {
                                                     <span className="text-xs text-[rgb(156,163,175)] mt-1 block">Cover tidak tersedia</span>
                                                 </div>
                                             </div>
-                                        )}
+                                        </div>
                                     </div>
 
                                     {/* Info */}
