@@ -12,12 +12,24 @@ class BorrowingController extends Controller
 {
     public function index()
     {
-        $borrowings = Borrowing::with(['book', 'user'])
-            ->orderByDesc('created_at')
-            ->paginate(10);  // Add pagination
+        $query = Borrowing::with(['book', 'user'])->orderByDesc('created_at');
+
+        // If there's a filter for overdue, add it
+        if (request()->has('overdue') && request('overdue') === 'true') {
+            $query->where('status', 'borrowed')
+                  ->where('due_date', '<', now());
+        }
+
+        // If there's a filter for pending approval
+        if (request()->has('pending') && request('pending') === 'true') {
+            $query->where('status', 'requested');
+        }
+
+        $borrowings = $query->paginate(10);
 
         return Inertia::render('Admin/Borrowings/Index', [
             'borrowings' => $borrowings,
+            'filters' => request()->only(['overdue', 'pending']),
         ]);
     }
 

@@ -18,6 +18,20 @@ class DashboardController extends Controller
         $activeBorrowings = Borrowing::whereIn('status', ['requested', 'borrowed'])->count();
         $totalFine = Borrowing::sum('fine_amount');
 
+        // Data for actionable items
+        $pendingBorrowings = Borrowing::where('status', 'requested')->count();
+        $overdueBorrowings = Borrowing::where('status', 'borrowed')
+            ->where('due_date', '<', now())
+            ->count();
+        $unpaidFines = Borrowing::where('fine_amount', '<', 0) // Negative indicates owed
+            ->where(function($query) {
+                $query->whereNull('fine_paid_at')
+                      ->orWhere('fine_paid_at', '<', now()->subDays(30)); // Or not marked as paid recently
+            })
+            ->count();
+        $criticalStockBooks = Book::whereColumn('available_copies', '<', DB::raw('LEAST(3, total_copies * 0.1)')) // Less than 3 or 10% of total
+            ->count();
+
         // Statistik peminjaman per bulan (12 bulan terakhir)
         $borrowingsPerMonth = Borrowing::select(
             DB::raw("DATE_FORMAT(borrow_date, '%Y-%m') as month"),
@@ -40,6 +54,12 @@ class DashboardController extends Controller
                 'members' => $totalMembers,
                 'borrowings' => $activeBorrowings,
                 'fines' => $totalFine,
+            ],
+            'actionableStats' => [
+                'pendingBorrowings' => $pendingBorrowings,
+                'overdueBorrowings' => $overdueBorrowings,
+                'unpaidFines' => $unpaidFines,
+                'criticalStockBooks' => $criticalStockBooks,
             ],
             'chartData' => $borrowingsPerMonth,
         ]);

@@ -1,13 +1,28 @@
 import { Link, usePage } from "@inertiajs/react";
 import AdminLayout from "../AdminLayout";
+import { useState } from "react";
 
-export default function Index({ members }) {
+export default function Index({ members, filters }) {
     const { flash } = usePage().props;
+    const [currentFilters, setCurrentFilters] = useState({
+        overdue: filters?.overdue || '',
+        fines: filters?.fines || ''
+    });
+
+    // Function to update filters
+    const updateFilter = (filterName, value) => {
+        const newFilters = { ...currentFilters, [filterName]: value };
+        setCurrentFilters(newFilters);
+
+        // Update URL without page reload
+        const query = new URLSearchParams(newFilters).toString();
+        window.location.href = `${window.location.pathname}?${query}`;
+    };
 
     return (
         <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
             {/* Header */}
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
                 <div>
                     <h1 className="text-2xl font-semibold text-gray-900 tracking-tight">
                         Daftar Member
@@ -23,6 +38,41 @@ export default function Index({ members }) {
                 >
                     + Tambah Member
                 </Link>
+            </div>
+
+            {/* Filters */}
+            <div className="flex flex-wrap gap-2">
+                <button
+                    onClick={() => updateFilter('overdue', currentFilters.overdue === 'true' ? '' : 'true')}
+                    className={`px-3 py-1.5 text-sm rounded-full ${
+                        currentFilters.overdue === 'true'
+                            ? 'bg-amber-100 text-amber-800 border border-amber-200'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                >
+                    Member Terlambat
+                </button>
+                <button
+                    onClick={() => updateFilter('fines', currentFilters.fines === 'true' ? '' : 'true')}
+                    className={`px-3 py-1.5 text-sm rounded-full ${
+                        currentFilters.fines === 'true'
+                            ? 'bg-red-100 text-red-800 border border-red-200'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                >
+                    Member Denda Belum Bayar
+                </button>
+                {(currentFilters.overdue === 'true' || currentFilters.fines === 'true') && (
+                    <button
+                        onClick={() => {
+                            setCurrentFilters({ overdue: '', fines: '' });
+                            window.location.href = window.location.pathname;
+                        }}
+                        className="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-800"
+                    >
+                        Reset Filter
+                    </button>
+                )}
             </div>
 
             {/* Flash Message */}
@@ -44,6 +94,15 @@ export default function Index({ members }) {
                                 Email
                             </th>
                             <th className="px-5 py-3 text-left font-semibold text-gray-600">
+                                Peminjaman Aktif
+                            </th>
+                            <th className="px-5 py-3 text-left font-semibold text-gray-600">
+                                Terlambat
+                            </th>
+                            <th className="px-5 py-3 text-left font-semibold text-gray-600">
+                                Denda Belum Bayar
+                            </th>
+                            <th className="px-5 py-3 text-left font-semibold text-gray-600">
                                 Tanggal Bergabung
                             </th>
                             <th className="px-5 py-3 text-left font-semibold text-gray-600">
@@ -56,13 +115,40 @@ export default function Index({ members }) {
                             members.data.map((member) => (
                                 <tr
                                     key={member.id}
-                                    className="border-b last:border-none hover:bg-gray-50 transition-all"
+                                    className={`border-b last:border-none hover:bg-gray-50 transition-all ${
+                                        (member.overdue_borrowings_count > 0 || member.unpaid_fines_count > 0)
+                                            ? "bg-red-50 border-l-4 border-l-red-500"
+                                            : ""
+                                    }`}
                                 >
                                     <td className="px-5 py-3 font-medium text-gray-900">
                                         {member.name}
                                     </td>
                                     <td className="px-5 py-3">
                                         {member.email}
+                                    </td>
+                                    <td className="px-5 py-3">
+                                        <span className="font-medium">
+                                            {member.active_borrowings_count}
+                                        </span>
+                                    </td>
+                                    <td className="px-5 py-3">
+                                        {member.overdue_borrowings_count > 0 ? (
+                                            <span className="font-medium text-amber-600">
+                                                {member.overdue_borrowings_count}
+                                            </span>
+                                        ) : (
+                                            <span className="text-gray-500">0</span>
+                                        )}
+                                    </td>
+                                    <td className="px-5 py-3">
+                                        {member.unpaid_fines_count > 0 ? (
+                                            <span className="font-medium text-red-600">
+                                                {member.unpaid_fines_count}
+                                            </span>
+                                        ) : (
+                                            <span className="text-gray-500">0</span>
+                                        )}
                                     </td>
                                     <td className="px-5 py-3 text-gray-600">
                                         {new Date(
@@ -105,7 +191,7 @@ export default function Index({ members }) {
                         ) : (
                             <tr>
                                 <td
-                                    colSpan="4"
+                                    colSpan="7"
                                     className="text-center text-gray-500 py-10 italic"
                                 >
                                     Belum ada member.

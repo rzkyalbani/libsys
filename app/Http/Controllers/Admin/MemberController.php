@@ -12,12 +12,51 @@ class MemberController extends Controller
 {
     public function index()
     {
-        $members = User::where('role', 'member')
-            ->latest()
-            ->paginate(10);
+        $query = User::where('role', 'member')->latest();
+
+        // Add filter for members with overdue books
+        if (request()->has('overdue') && request('overdue') === 'true') {
+            $query->whereHas('borrowings', function($q) {
+                $q->where('status', 'borrowed')
+                  ->where('due_date', '<', now());
+            });
+        }
+
+        // Add filter for members with unpaid fines
+        if (request()->has('fines') && request('fines') === 'true') {
+            $query->whereHas('borrowings', function($q) {
+                $q->where('fine_amount', '<', 0) // Negative fine means owes money
+                  ->where('is_fine_paid', false);
+            });
+        }
+
+        $members = $query->paginate(10);
+
+        // Add virtual properties for each member
+        $members->getCollection()->transform(function ($member) {
+            // Count active borrowings (requested or borrowed)
+            $member->active_borrowings_count = $member->borrowings()
+                ->whereIn('status', ['requested', 'borrowed'])
+                ->count();
+
+            // Count overdue borrowings
+            $member->overdue_borrowings_count = $member->borrowings()
+                ->where('status', 'borrowed')
+                ->where('due_date', '<', now())
+                ->count();
+
+            // Count unpaid fines
+            $member->unpaid_fines_count = $member->borrowings()
+                ->where('fine_amount', '<', 0) // Negative fine means owes money
+                ->where('is_fine_paid', false)
+                ->count();
+
+            return $member;
+        });
 
         return Inertia::render('Admin/Members/Index', [
             'members' => $members,
+            'filters' => request()->only(['overdue', 'fines']),
         ]);
     }
 

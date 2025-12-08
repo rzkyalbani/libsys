@@ -10,7 +10,7 @@ import {
     ResponsiveContainer,
 } from "recharts";
 
-export default function Dashboard({ auth, stats, chartData }) {
+export default function Dashboard({ auth, stats, actionableStats, chartData }) {
     const summary = [
         {
             title: "Total Buku",
@@ -113,7 +113,89 @@ export default function Dashboard({ auth, stats, chartData }) {
                 </p>
             </header>
 
-            {/* Statistik Cards */}
+            {/* Actionable Items Section - Things that need attention */}
+            <section className="mb-8">
+                <h2 className="text-xl font-semibold text-gray-900 mb-4">Perlu Ditindaklanjuti Hari Ini</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <Link
+                        href={route('admin.borrowings.index')}
+                        className={`card p-4 flex flex-col items-center text-center ${
+                            actionableStats.pendingBorrowings > 0
+                                ? 'border-red-200 bg-red-50 border-2'
+                                : 'border-gray-200'
+                        }`}
+                    >
+                        <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center mb-2">
+                            <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 className="font-medium text-gray-900">Peminjaman Menunggu</h3>
+                        <p className={`text-2xl font-bold ${actionableStats.pendingBorrowings > 0 ? 'text-red-600' : 'text-gray-600'}`}>
+                            {actionableStats.pendingBorrowings}
+                        </p>
+                    </Link>
+
+                    <Link
+                        href={route('admin.borrowings.index')}
+                        className={`card p-4 flex flex-col items-center text-center ${
+                            actionableStats.overdueBorrowings > 0
+                                ? 'border-amber-200 bg-amber-50 border-2'
+                                : 'border-gray-200'
+                        }`}
+                    >
+                        <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center mb-2">
+                            <svg className="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 className="font-medium text-gray-900">Peminjaman Terlambat</h3>
+                        <p className={`text-2xl font-bold ${actionableStats.overdueBorrowings > 0 ? 'text-amber-600' : 'text-gray-600'}`}>
+                            {actionableStats.overdueBorrowings}
+                        </p>
+                    </Link>
+
+                    <Link
+                        href={route('admin.fines.index')}
+                        className={`card p-4 flex flex-col items-center text-center ${
+                            actionableStats.unpaidFines > 0
+                                ? 'border-rose-200 bg-rose-50 border-2'
+                                : 'border-gray-200'
+                        }`}
+                    >
+                        <div className="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center mb-2">
+                            <svg className="w-6 h-6 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 className="font-medium text-gray-900">Denda Belum Dibayar</h3>
+                        <p className={`text-2xl font-bold ${actionableStats.unpaidFines > 0 ? 'text-rose-600' : 'text-gray-600'}`}>
+                            {actionableStats.unpaidFines}
+                        </p>
+                    </Link>
+
+                    <Link
+                        href={route('admin.books.index')}
+                        className={`card p-4 flex flex-col items-center text-center ${
+                            actionableStats.criticalStockBooks > 0
+                                ? 'border-blue-200 bg-blue-50 border-2'
+                                : 'border-gray-200'
+                        }`}
+                    >
+                        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mb-2">
+                            <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                            </svg>
+                        </div>
+                        <h3 className="font-medium text-gray-900">Buku Stok Kritis</h3>
+                        <p className={`text-2xl font-bold ${actionableStats.criticalStockBooks > 0 ? 'text-blue-600' : 'text-gray-600'}`}>
+                            {actionableStats.criticalStockBooks}
+                        </p>
+                    </Link>
+                </div>
+            </section>
+
+            {/* General Stats Cards */}
             <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 {summary.map((item, i) => (
                     <div

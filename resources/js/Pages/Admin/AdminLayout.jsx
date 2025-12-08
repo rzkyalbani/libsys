@@ -20,6 +20,37 @@ export default function AdminLayout({ children }) {
                         </p>
                     </div>
 
+                    {/* Quick Access */}
+                    <div className="space-y-2">
+                        <h3 className="px-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Akses Cepat</h3>
+                        <div className="flex flex-wrap gap-2 p-2">
+                            <Link
+                                href={route("admin.borrowings.index") + "?pending=true"}
+                                className="flex-1 min-w-[45%] text-xs py-1.5 px-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-md text-center transition-colors truncate"
+                            >
+                                Peminjaman Menunggu
+                            </Link>
+                            <Link
+                                href={route("admin.borrowings.index") + "?overdue=true"}
+                                className="flex-1 min-w-[45%] text-xs py-1.5 px-2 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-md text-center transition-colors truncate"
+                            >
+                                Terlambat
+                            </Link>
+                            <Link
+                                href={route("admin.fines.index") + "?paid=false"}
+                                className="flex-1 min-w-[45%] text-xs py-1.5 px-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-md text-center transition-colors truncate"
+                            >
+                                Denda Belum Bayar
+                            </Link>
+                            <Link
+                                href={route("admin.books.index") + "?stock=critical"}
+                                className="flex-1 min-w-[45%] text-xs py-1.5 px-2 bg-rose-100 hover:bg-rose-200 text-rose-700 rounded-md text-center transition-colors truncate"
+                            >
+                                Stok Kritis
+                            </Link>
+                        </div>
+                    </div>
+
                     {/* Navigation */}
                     <nav className="flex flex-col space-y-0.5">
                         <NavLink

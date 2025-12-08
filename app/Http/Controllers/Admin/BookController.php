@@ -7,17 +7,45 @@ use App\Models\Book;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
     public function index()
     {
-        $books = Book::with('category')->latest()->paginate(10);
+        $query = Book::with('category')->latest();
+
+        // If there's a filter for critical stock
+        if (request()->has('stock') && request('stock') === 'critical') {
+            $query->whereColumn('available_copies', '<', DB::raw('LEAST(3, total_copies * 0.1)'));
+        }
+
+        $books = $query->paginate(10);
+
+        // Add a virtual property for stock status
+        $books->getCollection()->transform(function ($book) {
+            $book->stock_status = $this->getStockStatus($book);
+            return $book;
+        });
 
         return Inertia::render('Admin/Books/Index', [
             'books' => $books,
+            'filters' => request()->only(['stock']),
         ]);
+    }
+
+    private function getStockStatus($book)
+    {
+        if ($book->available_copies <= 0) {
+            return 'empty';
+        } elseif ($book->available_copies <= min(3, $book->total_copies * 0.1)) { // Less than 3 or 10% of total
+            return 'critical';
+        } elseif ($book->available_copies <= min(10, $book->total_copies * 0.2)) { // Less than 10 or 20% of total
+            return 'low';
+        } else {
+            return 'good';
+        }
     }
 
     public function create()

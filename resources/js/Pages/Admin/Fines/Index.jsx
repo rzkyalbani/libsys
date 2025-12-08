@@ -1,13 +1,27 @@
 import { Link, usePage } from "@inertiajs/react";
 import AdminLayout from "../AdminLayout";
+import { useState } from "react";
 
-export default function Index({ borrowings }) {
+export default function Index({ borrowings, filters }) {
     const { flash } = usePage().props;
+    const [currentFilters, setCurrentFilters] = useState({
+        paid: filters?.paid || ''
+    });
+
+    // Function to update filters
+    const updateFilter = (value) => {
+        const newFilters = { paid: value };
+        setCurrentFilters(newFilters);
+
+        // Update URL without page reload
+        const query = new URLSearchParams(newFilters).toString();
+        window.location.href = `${window.location.pathname}?${query}`;
+    };
 
     return (
         <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
             {/* Header */}
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
                 <div>
                     <h1 className="text-2xl font-semibold text-gray-900 tracking-tight">
                         Manajemen Denda
@@ -15,6 +29,41 @@ export default function Index({ borrowings }) {
                     <p className="text-sm text-gray-500">
                         Lihat dan kelola pembayaran denda keterlambatan
                     </p>
+                </div>
+
+                {/* Filters */}
+                <div className="flex flex-wrap gap-2">
+                    <button
+                        onClick={() => updateFilter(currentFilters.paid === 'false' ? '' : 'false')}
+                        className={`px-3 py-1.5 text-sm rounded-full ${
+                            currentFilters.paid === 'false'
+                                ? 'bg-red-100 text-red-800 border border-red-200'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                    >
+                        Belum Dibayar
+                    </button>
+                    <button
+                        onClick={() => updateFilter(currentFilters.paid === 'true' ? '' : 'true')}
+                        className={`px-3 py-1.5 text-sm rounded-full ${
+                            currentFilters.paid === 'true'
+                                ? 'bg-green-100 text-green-800 border border-green-200'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                    >
+                        Sudah Dibayar
+                    </button>
+                    {(currentFilters.paid === 'true' || currentFilters.paid === 'false') && (
+                        <button
+                            onClick={() => {
+                                setCurrentFilters({ paid: '' });
+                                window.location.href = window.location.pathname;
+                            }}
+                            className="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-800"
+                        >
+                            Reset Filter
+                        </button>
+                    )}
                 </div>
             </div>
 
@@ -61,7 +110,11 @@ export default function Index({ borrowings }) {
                             borrowings.data.map((item) => (
                                 <tr
                                     key={item.id}
-                                    className="border-b last:border-none hover:bg-gray-50 transition-all"
+                                    className={`border-b last:border-none hover:bg-gray-50 transition-all ${
+                                        !item.is_fine_paid
+                                            ? "bg-red-50 border-l-4 border-l-red-500"
+                                            : "bg-emerald-50 border-l-4 border-l-emerald-500"
+                                    }`}
                                 >
                                     <td className="px-5 py-3 font-medium text-gray-900">
                                         {item.user?.name || "—"}
@@ -71,7 +124,7 @@ export default function Index({ borrowings }) {
                                     </td>
                                     <td className="px-5 py-3 font-semibold text-rose-600">
                                         Rp{" "}
-                                        {item.fine_amount.toLocaleString(
+                                        {Math.abs(item.fine_amount).toLocaleString(
                                             "id-ID"
                                         )}
                                     </td>
