@@ -4,8 +4,8 @@ import MemberLayout from "./MemberLayout";
 export default function Dashboard({ auth }) {
     const quickLinks = [
         {
-            title: "Edit Profil",
-            desc: "Ubah nama, email, atau password akun kamu.",
+            title: "Profil Anggota",
+            desc: "Kelola informasi akun dan preferensi Anda.",
             href: route("member.profile.edit"),
             icon: (
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -15,7 +15,7 @@ export default function Dashboard({ auth }) {
         },
         {
             title: "Katalog Buku",
-            desc: "Lihat dan cari buku yang tersedia untuk dipinjam.",
+            desc: "Jelajahi koleksi buku yang tersedia untuk Anda.",
             href: route("member.books.index"),
             icon: (
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -24,8 +24,8 @@ export default function Dashboard({ auth }) {
             ),
         },
         {
-            title: "Riwayat Peminjaman",
-            desc: "Lihat daftar buku yang sudah dan sedang kamu pinjam.",
+            title: "Aktivitas Saya",
+            desc: "Lihat buku yang sedang dan pernah Anda pinjam.",
             href: route("member.borrowings.index"),
             icon: (
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -34,8 +34,8 @@ export default function Dashboard({ auth }) {
             ),
         },
         {
-            title: "Reservasi Saya",
-            desc: "Cek daftar buku yang kamu pesan dan tunggu ketersediaannya.",
+            title: "Daftar Tunggu",
+            desc: "Lihat buku yang Anda pesan dan ketersediaannya.",
             href: route("member.reservations.index"),
             icon: (
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -46,39 +46,42 @@ export default function Dashboard({ auth }) {
     ];
 
     return (
-        <div className="main-container py-8">
-            {/* Header */}
-            <header className="page-header">
-                <h1 className="page-title">
-                    Halo, {auth.user.name}
-                </h1>
-                <p className="page-subtitle">
-                    Selamat datang di dashboard member LibSys.
-                </p>
-            </header>
+        <div className="bg-gradient-to-b from-[rgb(239,246,255)] to-white py-8">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Header */}
+                <header className="mb-8 text-center">
+                    <h1 className="text-3xl font-bold text-[rgb(23,23,23)] tracking-tight">
+                        Selamat Datang, {auth.user.name}
+                    </h1>
+                    <p className="text-[rgb(115,115,115)] mt-2 max-w-2xl mx-auto">
+                        Temukan pengetahuan, inspirasi, dan koneksi melalui koleksi perpustakaan kami.
+                        Akses buku, sumber daya digital, dan layanan yang mendukung perjalanan pembelajaran Anda.
+                    </p>
+                </header>
 
-            {/* Quick Navigation */}
-            <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {quickLinks.map((link, i) => (
-                    <Link
-                        key={i}
-                        href={link.href}
-                        className="card p-5 flex items-start gap-4 hover:shadow-md transition-shadow"
-                    >
-                        <div className="p-2 bg-blue-100 text-blue-600 rounded-lg">
-                            {link.icon}
-                        </div>
-                        <div>
-                            <h2 className="text-base font-semibold text-gray-900 mb-1">
-                                {link.title}
-                            </h2>
-                            <p className="text-sm text-gray-600 leading-relaxed">
-                                {link.desc}
-                            </p>
-                        </div>
-                    </Link>
-                ))}
-            </section>
+                {/* Quick Navigation */}
+                <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+                    {quickLinks.map((link, i) => (
+                        <Link
+                            key={i}
+                            href={link.href}
+                            className="bg-white border border-[rgb(229,229,229)] rounded-xl p-6 hover:shadow-md transition-all duration-200 flex items-start gap-4"
+                        >
+                            <div className="p-3 bg-blue-100 text-blue-600 rounded-lg">
+                                {link.icon}
+                            </div>
+                            <div>
+                                <h2 className="text-lg font-semibold text-[rgb(23,23,23)] mb-1">
+                                    {link.title}
+                                </h2>
+                                <p className="text-[rgb(115,115,115)] text-sm leading-relaxed">
+                                    {link.desc}
+                                </p>
+                            </div>
+                        </Link>
+                    ))}
+                </section>
+            </div>
         </div>
     );
 }
